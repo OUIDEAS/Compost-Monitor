@@ -31,7 +31,7 @@ python3 ~/WindowsCodeFolder/PMQ_argparse.py -f /mnt/c/Users/Dan\'s\ Loaner/Docum
 # p15pid = $!
 python3 ~/WindowsCodeFolder/RB_argparse.py -f /mnt/c/Users/Dan\'s\ Loaner/Documents/Compost\ Monitor/Test\ Data -n 4 -c /dev/ttyS55 &
 # p16pid = $!
-cmd.exe /c start cmd.exe /c wsl.exe
+# cmd.exe /c start cmd.exe /c wsl.exe
 # endcommand = input('type "killme" to kill this process')
 # if endcommand == "killme"
 #     kill p1pid p2pid p3pid p4pid p5pid p6pid p7pid p8pid p9pid p10pid p11pid p12pid p13pid p14pid p15pid p16pid

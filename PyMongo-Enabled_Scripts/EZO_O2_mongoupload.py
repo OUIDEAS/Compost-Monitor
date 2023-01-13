@@ -29,7 +29,7 @@ header = ['Date/Time', 'O2 Concentration (%)']
 startTime = time.time()
 startup = True
 
-client = MongoClient("mongodb+srv://ouideas:pixhawk2@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+client = MongoClient("mongodb+srv://<user>:<pwd>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
 db = client['CompostMonitor-1']
 
 def upload_to_database(data):

@@ -1,12 +1,10 @@
-##TODO methane sensor eventually sends two \x16 bytes, figure out how to handle it
-
-
 import serial
 import time
 import struct
 import pathlib
-import csv
 import argparse
+import multiprocessing
+from pymongo import MongoClient
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comport')
@@ -25,66 +23,113 @@ serialPort = serial.Serial(port, baud_rate)
 directoryBase = "{}/{}/Bucket {}/CH4".format(args.filename, (time.strftime("%m-%d-%Y")), args.containernumber)
 pathlib.Path(directoryBase).mkdir(parents=True, exist_ok=True)
 logFileCH4 = '{}/CH4_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H;%M;%S"))
-csvCH4 = '{}/CH4_Bucket_{}_{}_{}.csv'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H;%M;%S"))
-header = ['Date/Time', 'CH4 Concentration (%)']
 
 overallList = []
 count = 0
 startTime = time.time()
 
 barray = []
+methane_DataDict = {}
 
 packetstart = False
 packetcount = -1
 packetsize = -1
+lencount = 0
 
 serialPort.reset_input_buffer()
+
+startup = True
+
+client = MongoClient("mongodb+srv://ouideas:pixhawk2@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+db = client['CompostMonitor-1']
+
+def upload_to_database(data):
+    try:
+        # Connect to the collection where the data will be stored
+        collection = db.methane
+
+        # Insert the data into the collection
+        print(data)
+        collection.insert_one(data)
+    except:
+        print('Error uploading to MongoDB')
+
+p = multiprocessing.Process(target = upload_to_database, args = (methane_DataDict,))
 
 read_command = (b'\x11\x01\x01\xED')
 while True:
     with open(logFileCH4, 'ab') as log:
-        with open(csvCH4, 'a', newline = '') as c:
-            writer = csv.writer(c)
-            if count == 0:
-                writer.writerow(header)
-                print('header written')
-            serialPort.write(read_command)
-            time.sleep(1)
-            while serialPort.in_waiting:
-                newb = serialPort.read(size=1)
-                barray.append(newb)
-                log.write(newb)
 
-                if (packetstart and packetsize == -1):
-                    packetsize = int.from_bytes(newb, 'little')
 
-                if (packetstart and packetsize > 1):
-                    packetcount = packetcount + 1
+        serialPort.write(read_command)
+        time.sleep(1)
 
-                if (packetcount == packetsize + 1):
-                    wholeInput = b''.join(barray)
-                    print(wholeInput)
 
-                    unpack = struct.unpack('>BBBHHB', wholeInput)
-                    print(unpack)
+        while serialPort.in_waiting:
+            newb = serialPort.read(size=1)
+            print(newb)
+            barray.append(newb)
+            lencount += 1
+            log.write(newb)
 
-                    packetstart = False
-                    packetsize = -1
-                    packetcount = -1
+            ## second byte (status is first byte) shows the size of the packet - use that to set the length of the word
+            if (packetstart and packetsize == -1):
+                packetsize = int.from_bytes(newb, 'little')
 
-                    wholeInput = b''
-                    barray = []
-                    overallList.append(time.strftime("%m-%d-%Y %H:%M:%S"))
-                    for i in range(len(unpack)):
-                        overallList.append(str(unpack[i]))
-                    print(overallList)
-                    count += 1
+            ## count up each loop when packetsize is not default value
+            if (packetstart and packetsize > 1):
+                packetcount = packetcount + 1
 
-                    writer.writerow(overallList)
-                    overallList = []
-                if (newb == b'\x16'):
-                    print('newb == b\x16')
+            ## handle status byte and check that incoming byte is actually the status byte, not the last byte in a word
+            if (newb == b'\x16'):
+                if (lencount != 0 and lencount < packetsize + 1):
+                    print('lencount is now:', lencount)
+                    print('packetsize is currently:', packetsize)
+                    lencount = 0
+                else:
                     packetstart = True
+
+            ## if the packetcount and the size of the packet match, the word is finished - now time to decode
+            ## and prepare to start over
+            if (packetcount == packetsize + 1):
+                wholeInput = b''.join(barray)
+                print(wholeInput)
+
+                unpack = struct.unpack('>BBBHHB', wholeInput)
+                print(unpack)
+
+                overallList.append(time.strftime("%m-%d-%Y %H:%M:%S"))
+                for i in range(len(unpack)):
+                    overallList.append(str(unpack[i]))
+                print(overallList)
+
+                methane_DataDict = {'Date_Time': overallList[0], 'Parse_1': overallList[1], 'Parse_2': overallList[2],
+                                    'Parse_3': overallList[3], 'Methane Con': overallList[4], 'Parse_5': overallList[5],
+                                    'Parse_6': overallList[6]}
+
+                if __name__ == '__main__':
+                    if startup:
+                        p.start()
+                        startup = False
+                        print('startup == false')
+                    else:
+                        p.close()
+                        p = multiprocessing.Process(target=upload_to_database, args=(methane_DataDict,))
+                        p.start()
+
+                packetstart = False
+                packetsize = -1
+                packetcount = -1
+
+                wholeInput = b''
+                barray = []
+                overallList = []
+
+                print('lencount and packetsize:', lencount, packetsize)
+                lencount = 0
+
+                count += 1
+
 
 
     if time.time() - startTime >= 3600:

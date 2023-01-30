@@ -23,13 +23,13 @@ bytearray = []
 PMQ_DataList = []
 PMQ_DataDict = {}
 
-client = MongoClient("mongodb+srv://<user>:<pwd>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
-db = client['CompostMonitor-1']
+client = MongoClient("mongodb+srv://ouideas:<password>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+db = client['CompostMonitor-{}'.format(args.containernumber)]
 
 def upload_to_database(data):
     try:
         # Connect to the collection where the data will be stored
-        collection = db.RedBoard
+        collection = db.PMQ
 
         # Insert the data into the collection
         print(data)

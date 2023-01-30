@@ -5,6 +5,7 @@ import pathlib
 import argparse
 import multiprocessing
 from pymongo import MongoClient
+import datetime
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comport')
@@ -12,10 +13,6 @@ parser.add_argument('-f', '--filename')
 parser.add_argument('-n', '--containernumber')
 args = parser.parse_args()
 
-
-args.comport = '/dev/ttyUSB1'
-args.filename = '/home/dan/TestData'
-args.containernumber = 1
 port = ''.join(args.comport)
 baud_rate = 9600
 serialPort = serial.Serial(port, baud_rate)
@@ -40,13 +37,13 @@ serialPort.reset_input_buffer()
 
 startup = True
 
-client = MongoClient("mongodb+srv://ouideas:pixhawk2@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
-db = client['CompostMonitor-1']
+client = MongoClient("mongodb+srv://ouideas:<password>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+db = client['CompostMonitor-{}'.format(args.containernumber)]
 
 def upload_to_database(data):
     try:
         # Connect to the collection where the data will be stored
-        collection = db.methane
+        collection = db.Methane
 
         # Insert the data into the collection
         print(data)
@@ -98,7 +95,7 @@ while True:
                 unpack = struct.unpack('>BBBHHB', wholeInput)
                 print(unpack)
 
-                overallList.append(time.strftime("%m-%d-%Y %H:%M:%S"))
+                overallList.append(datetime.datetime.now())
                 for i in range(len(unpack)):
                     overallList.append(str(unpack[i]))
                 print(overallList)

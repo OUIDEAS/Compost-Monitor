@@ -4,6 +4,7 @@ import pathlib
 import argparse
 import multiprocessing
 from pymongo import MongoClient
+import datetime
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comport')
@@ -11,8 +12,8 @@ parser.add_argument('-f', '--filename')
 parser.add_argument('-n', '--containernumber')
 args = parser.parse_args()
 
-client = MongoClient("mongodb+srv://<user>:<pwd>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
-db = client['CompostMonitor-1']
+client = MongoClient("mongodb+srv://ouideas:<password>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+db = client['CompostMonitor-{}'.format(args.containernumber)]
 
 
 def upload_to_database(data):
@@ -21,7 +22,6 @@ def upload_to_database(data):
         collection = db.RedBoard
 
         # Insert the data into the collection
-        print(data)
         collection.insert_one(data)
     except:
         print('Error uploading to MongoDB')
@@ -60,7 +60,7 @@ while 1:
             replace('[', '').replace(']', '').split(';')
 
         # Start the main list with a timestamp
-        RB_DataList.append(time.strftime("%m-%d-%Y %H:%M:%S"))
+        RB_DataList.append(datetime.datetime.now())
 
         # Add the strings from RB_DataSplit to the list
         for i in range(len(RB_DataSplit)):
@@ -69,6 +69,7 @@ while 1:
         # Make a dictionary of the data for PyMongo
         RB_DataDict = {'Date_Time': RB_DataList[0], 'TVOC Con': RB_DataList[1], 'BME Humidity': RB_DataList[2],
                        'BME Pressure': RB_DataList[3], 'BME Temp': RB_DataList[4]}
+        print(RB_DataDict)
 
         ## Reset the data list
         RB_DataList = []
@@ -84,7 +85,6 @@ while 1:
                 p.close()
                 p = multiprocessing.Process(target= upload_to_database, args = (RB_DataDict,))
                 p.start()
-                print('should have uploaded something here')
 
         byteArray = []
         count += 1

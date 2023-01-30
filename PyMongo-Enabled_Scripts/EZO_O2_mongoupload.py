@@ -1,9 +1,11 @@
+import datetime
 import time
 import serial
 import pathlib
 import argparse
 import multiprocessing
 from pymongo import MongoClient
+import datetime
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comport')
@@ -29,13 +31,13 @@ header = ['Date/Time', 'O2 Concentration (%)']
 startTime = time.time()
 startup = True
 
-client = MongoClient("mongodb+srv://<user>:<pwd>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
-db = client['CompostMonitor-1']
+client = MongoClient("mongodb+srv://ouideas:<password>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+db = client['CompostMonitor-{}'.format(args.containernumber)]
 
 def upload_to_database(data):
     try:
         # Connect to the collection where the data will be stored
-        collection = db.RedBoard
+        collection = db.Oxygen
 
         # Insert the data into the collection
         print(data)
@@ -56,7 +58,7 @@ while 1:
             ''.join(str(bytearray)).replace(" ", "").replace('b', '').replace("'", '').replace(",", '').replace('[',
                                                                                                                 '').replace(
                 ']', ''))
-        overallList.append(time.strftime("%m-%d-%Y %H:%M:%S"))
+        overallList.append(datetime.datetime.now())
         overallList.append(str(''.join(DataList[count])))
         overallList.pop(0)
         overallList.pop(0)

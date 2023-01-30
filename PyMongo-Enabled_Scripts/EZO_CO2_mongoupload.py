@@ -4,6 +4,7 @@ import pathlib
 import argparse
 import multiprocessing
 from pymongo import MongoClient
+import datetime
 
 
 parser = argparse.ArgumentParser()
@@ -31,13 +32,13 @@ header = [ 'Date/Time', 'CO2 Concentration (ppm)']
 startTime = time.time()
 startup = True
 
-client = MongoClient("mongodb+srv://<user>:<pwd>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
-db = client['CompostMonitor-1']
+client = MongoClient("mongodb+srv://ouideas:<password>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+db = client['CompostMonitor-{}'.format(args.containernumber)]
 
 def upload_to_database(data):
     try:
         # Connect to the collection where the data will be stored
-        collection = db.RedBoard
+        collection = db['Carbon Dioxide']
 
         # Insert the data into the collection
         print(data)
@@ -59,8 +60,7 @@ while 1:
         DataList.append(
             ''.join(str(bytearray)).replace(" ", "").replace('b', '').replace("'", '').replace(",", '')
             .replace('[','').replace(']', ''))
-        # print(DataList[count])
-        overallList.append(time.strftime("%m-%d-%Y %H:%M:%S"))
+        overallList.append(datetime.datetime.now())
         overallList.append(str(''.join(DataList[count])))
         overallList.pop(0)
         overallList.pop(0)
@@ -73,7 +73,7 @@ while 1:
                 print('startup == false')
             else:
                 p.close()
-                p = multiprocessing.Process(target = upload_to_database, args = (O2_DataDict,))
+                p = multiprocessing.Process(target = upload_to_database, args = (CO2_DataDict,))
                 p.start()
         bytearray = []
         count += 1

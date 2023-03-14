@@ -13,6 +13,9 @@ parser.add_argument('-f', '--filename')
 parser.add_argument('-n', '--containernumber')
 args = parser.parse_args()
 
+args.containernumber = 1
+args.filename = '/home/dan/TestData'
+args.comport = '/dev/ttyUSB10'
 CO2Port = ''.join(args.comport)
 baud_rate = 9600
 CO2Serial = serial.Serial(CO2Port, baud_rate, timeout=1)
@@ -27,13 +30,13 @@ DataList = []
 overallList = [0,0]
 CO2_DataDict = {}
 
-header = [ 'Date/Time', 'CO2 Concentration (ppm)']
+header = ['Date/Time', 'CO2 Concentration (ppm)']
 
 startTime = time.time()
 startup = True
 
-client = MongoClient("mongodb+srv://ouideas:<password>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
-db = client['CompostMonitor-{}'.format(args.containernumber)]
+client = MongoClient("mongodb+srv://user:pwd@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+db = client['CompostMonitor']
 
 def upload_to_database(data):
     try:
@@ -65,13 +68,15 @@ while 1:
         overallList.pop(0)
         overallList.pop(0)
         print(overallList)
-        CO2_DataDict = {'Date_Time': overallList[0], 'CO2 Con': overallList[1]}
+        CO2_DataDict = {'Date_Time': overallList[0], 'CO2 Con': overallList[1], 'Sensor': 'EZO-CO2',
+                        'Container No': args.containernumber, 'Experiment No': 0}
         if __name__ == '__main__':
             if startup:
                 p.start()
                 startup= False
                 print('startup == false')
             else:
+                p.join()
                 p.close()
                 p = multiprocessing.Process(target = upload_to_database, args = (CO2_DataDict,))
                 p.start()

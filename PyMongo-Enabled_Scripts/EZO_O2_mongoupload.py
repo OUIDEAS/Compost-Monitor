@@ -31,8 +31,8 @@ header = ['Date/Time', 'O2 Concentration (%)']
 startTime = time.time()
 startup = True
 
-client = MongoClient("mongodb+srv://ouideas:<password>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
-db = client['CompostMonitor-{}'.format(args.containernumber)]
+client = MongoClient("mongodb+srv://user:pwd@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+db = client['CompostMonitor']
 
 def upload_to_database(data):
     try:
@@ -52,7 +52,7 @@ while 1:
     with open(logFileO2, 'ab') as l:
         l.write(O2_inbyte)
     bytearray.append(O2_inbyte)
-    if O2_inbyte == b'/r':
+    if O2_inbyte == b'\r':
         bytearray.pop()
         DataList.append(
             ''.join(str(bytearray)).replace(" ", "").replace('b', '').replace("'", '').replace(",", '').replace('[',
@@ -63,16 +63,17 @@ while 1:
         overallList.pop(0)
         overallList.pop(0)
         print(overallList)
-        O2_DataDict = {'Date_Time': overallList[0], 'O2 Con': overallList[1]}
-        if __name__ == '__main__':
-            if startup:
-                p.start()
-                startup=False
-                print('startup == false')
-            else:
-                p.close()
-                p = multiprocessing.Process(target = upload_to_database, args = (O2_DataDict,))
-                p.start()
+        O2_DataDict = {'Date_Time': overallList[0], 'O2 Con': overallList[1], 'Sensor': 'EZO-O2',
+                       'Container No': args.containernumber, 'Experiment No': 0}
+        if startup:
+            p.start()
+            startup=False
+            print('startup == false')
+        else:
+            p.join()
+            p.close()
+            p = multiprocessing.Process(target = upload_to_database, args = (O2_DataDict,))
+            p.start()
         bytearray = []
         count += 1
     if time.time() - startTime >= 3600:

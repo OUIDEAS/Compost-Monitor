@@ -37,8 +37,8 @@ serialPort.reset_input_buffer()
 
 startup = True
 
-client = MongoClient("mongodb+srv://ouideas:<password>@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
-db = client['CompostMonitor-{}'.format(args.containernumber)]
+client = MongoClient("mongodb+srv://user:pwd@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+db = client['CompostMonitor']
 
 def upload_to_database(data):
     try:
@@ -102,7 +102,8 @@ while True:
 
                 methane_DataDict = {'Date_Time': overallList[0], 'Parse_1': overallList[1], 'Parse_2': overallList[2],
                                     'Parse_3': overallList[3], 'Methane Con': overallList[4], 'Parse_5': overallList[5],
-                                    'Parse_6': overallList[6]}
+                                    'Parse_6': overallList[6], 'Sensor': 'Methane',
+                                    'Container No': args.containernumber, 'Experiment No': 0}
 
                 if __name__ == '__main__':
                     if startup:
@@ -110,6 +111,7 @@ while True:
                         startup = False
                         print('startup == false')
                     else:
+                        p.join()
                         p.close()
                         p = multiprocessing.Process(target=upload_to_database, args=(methane_DataDict,))
                         p.start()

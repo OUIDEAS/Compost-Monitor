@@ -43,7 +43,7 @@ db = client['CompostMonitor']
 def upload_to_database(data):
     try:
         # Connect to the collection where the data will be stored
-        collection = db.Methane
+        collection = db['Overall']
 
         # Insert the data into the collection
         print(data)

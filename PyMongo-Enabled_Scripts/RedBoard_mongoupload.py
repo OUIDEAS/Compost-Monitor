@@ -19,7 +19,7 @@ db = client['CompostMonitor']
 def upload_to_database(data):
     try:
         # Connect to the collection where the data will be stored
-        collection = db.RedBoard
+        collection = db['Overall']
 
         # Insert the data into the collection
         collection.insert_one(data)

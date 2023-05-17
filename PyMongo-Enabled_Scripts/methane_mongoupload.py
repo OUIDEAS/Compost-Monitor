@@ -48,9 +48,9 @@ def upload_to_database(data):
     try:
         # Insert the data into the collection
         collection.insert_one(data)
-        print('Container {} RedBoard saved to MongoDB!'.format(args.containernumber))
+        print('Container {} methane saved to MongoDB!'.format(args.containernumber))
     except PyMongoError as e:
-        print('Error saving container {} to MongoDB \n'.format(args.containernumber), e)
+        print('Error saving container {} methane to MongoDB \n'.format(args.containernumber), e)
 
 p = multiprocessing.Process(target = upload_to_database, args = (methane_DataDict,))
 

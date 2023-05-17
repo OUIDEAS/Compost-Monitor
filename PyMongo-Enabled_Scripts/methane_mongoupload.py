@@ -5,12 +5,15 @@ import pathlib
 import argparse
 import multiprocessing
 from pymongo import MongoClient
+from pymongo.errors import PyMongoError
 import datetime
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comport')
 parser.add_argument('-f', '--filename')
 parser.add_argument('-n', '--containernumber')
+parser.add_argument('-cn', '--collection')
+parser.add_argument('-e', '--experimentnumber')
 args = parser.parse_args()
 
 port = ''.join(args.comport)
@@ -37,19 +40,17 @@ serialPort.reset_input_buffer()
 
 startup = True
 
-client = MongoClient("mongodb+srv://user:pwd@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+client = MongoClient("mongodb://localhost:27017/")
 db = client['CompostMonitor']
+collection = db['{}'.format(args.collection)]
 
 def upload_to_database(data):
     try:
-        # Connect to the collection where the data will be stored
-        collection = db['Overall']
-
         # Insert the data into the collection
-        print(data)
         collection.insert_one(data)
-    except:
-        print('Error uploading to MongoDB')
+        print('Container {} RedBoard saved to MongoDB!'.format(args.containernumber))
+    except PyMongoError as e:
+        print('Error saving container {} to MongoDB \n'.format(args.containernumber), e)
 
 p = multiprocessing.Process(target = upload_to_database, args = (methane_DataDict,))
 
@@ -103,7 +104,8 @@ while True:
                 methane_DataDict = {'Date_Time': overallList[0], 'Parse_1': overallList[1], 'Parse_2': overallList[2],
                                     'Parse_3': overallList[3], 'Methane Con': overallList[4], 'Parse_5': overallList[5],
                                     'Parse_6': overallList[6], 'Sensor': 'Methane',
-                                    'Container No': args.containernumber, 'Experiment No': 0}
+                                    'Container No': args.containernumber, 'Experiment No': args.experimentnumber}
+                print('Methane in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
 
                 if __name__ == '__main__':
                     if startup:

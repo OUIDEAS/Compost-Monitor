@@ -5,12 +5,15 @@ import pathlib
 import argparse
 import multiprocessing
 from pymongo import MongoClient
+from pymongo.errors import PyMongoError
 import datetime
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comport')
 parser.add_argument('-f', '--filename')
 parser.add_argument('-n', '--containernumber')
+parser.add_argument('-cn', '--collection')
+parser.add_argument('-e', '--experimentnumber')
 args = parser.parse_args()
 
 port = ''.join(args.comport)
@@ -31,19 +34,17 @@ header = ['Date/Time', 'O2 Concentration (%)']
 startTime = time.time()
 startup = True
 
-client = MongoClient("mongodb+srv://user:pwd@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+client = MongoClient("mongodb://localhost:27017/")
 db = client['CompostMonitor']
+collection = db['{}'.format(args.collection)]
 
 def upload_to_database(data):
     try:
-        # Connect to the collection where the data will be stored
-        collection = db['Overall']
-
         # Insert the data into the collection
-        print(data)
         collection.insert_one(data)
-    except:
-        print('Error uploading to MongoDB')
+        print('Container {} O2 saved to MongoDB!'.format(args.containernumber))
+    except PyMongoError as e:
+        print('Error saving container {} O2 to MongoDB \n'.format(args.containernumber), e)
 
 p = multiprocessing.Process(target = upload_to_database, args = (O2_DataDict,))
 
@@ -63,8 +64,9 @@ while 1:
         overallList.pop(0)
         overallList.pop(0)
         print(overallList)
-        O2_DataDict = {'Date_Time': overallList[0], 'O2 Con': overallList[1], 'Sensor': 'EZO-O2',
-                       'Container No': args.containernumber, 'Experiment No': 0}
+        O2_DataDict = {'Date_Time': overallList[0], 'O2_Con': overallList[1], 'Sensor': 'EZO-O2',
+                       'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
+        print('O2 in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
         if startup:
             p.start()
             startup=False

@@ -4,27 +4,28 @@ import pathlib
 import argparse
 import multiprocessing
 from pymongo import MongoClient
+from pymongo.errors import PyMongoError
 import datetime
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comport')
 parser.add_argument('-f', '--filename')
 parser.add_argument('-n', '--containernumber')
+parser.add_argument('-cn', '--collection')
+parser.add_argument('-e', '--experimentnumber')
 args = parser.parse_args()
 
-client = MongoClient("mongodb+srv://user:pwd@compostmonitor-1.o0tbgvg.mongodb.net/?retryWrites=true&w=majority")
+client = MongoClient("mongodb://localhost:27017/")
 db = client['CompostMonitor']
-
+collection = db['{}'.format(args.collection)]
 
 def upload_to_database(data):
     try:
-        # Connect to the collection where the data will be stored
-        collection = db['Overall']
-
         # Insert the data into the collection
         collection.insert_one(data)
-    except:
-        print('Error uploading to MongoDB')
+        print('Container {} RedBoard saved to MongoDB!'.format(args.containernumber))
+    except PyMongoError as e:
+        print('Error saving container {} RedBoard to MongoDB \n'.format(args.containernumber), e)
 
 
 port = ''.join(args.comport)
@@ -67,10 +68,10 @@ while 1:
             RB_DataList.append(RB_DataSplit[i])
 
         # Make a dictionary of the data for PyMongo
-        RB_DataDict = {'Date_Time': RB_DataList[0], 'TVOC Con': RB_DataList[1], 'BME Humidity': RB_DataList[2],
-                       'BME Pressure': RB_DataList[3], 'BME Temp': RB_DataList[4], 'Sensor': 'RedBoard',
-                       'Container No': args.containernumber, 'Experiment No': 0}
-        print(RB_DataDict)
+        RB_DataDict = {'Date_Time': RB_DataList[0], 'TVOC_Con': RB_DataList[1], 'BME_Humidity': RB_DataList[2],
+                       'BME_Pressure': RB_DataList[3], 'BME_Temp': RB_DataList[4], 'Sensor': 'RedBoard',
+                       'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
+        print('RedBoard in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
 
         ## Reset the data list
         RB_DataList = []

@@ -65,7 +65,7 @@ while True:
 
         while serialPort.in_waiting:
             newb = serialPort.read(size=1)
-            print(newb)
+            # print(newb)
             barray.append(newb)
             lencount += 1
             log.write(newb)

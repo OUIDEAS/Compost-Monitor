@@ -65,7 +65,7 @@ while 1:
         PMQ_DataList.append(datetime.datetime.now())
         for i in range(len(PMQ_DataSplit)):
             PMQ_DataList.append(PMQ_DataSplit[i])
-        print(PMQ_DataList)
+        # print(PMQ_DataList)
         PMQ_DataDict = {'Date_Time': PMQ_DataList[0], 'TVOC Con': PMQ_DataList[1], 'BME Humidity': PMQ_DataList[2],
                         'BME Pressure': PMQ_DataList[3], 'BME Temp': PMQ_DataList[4], 'Sensor': 'PMQ',
                         'Container No': args.containernumber, 'Experiment No': args.experimentnumber}

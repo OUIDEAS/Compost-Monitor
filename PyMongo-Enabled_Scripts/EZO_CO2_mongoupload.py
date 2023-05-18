@@ -65,7 +65,7 @@ while 1:
         overallList.append(str(''.join(DataList[count])))
         overallList.pop(0)
         overallList.pop(0)
-        print(overallList)
+        # print(overallList)
         CO2_DataDict = {'Date_Time': overallList[0], 'CO2 Con': overallList[1], 'Sensor': 'EZO-CO2',
                         'Container No': args.containernumber, 'Experiment No': args.experimentnumber}
         print('CO2 in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))

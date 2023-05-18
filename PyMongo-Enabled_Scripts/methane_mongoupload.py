@@ -22,7 +22,7 @@ serialPort = serial.Serial(port, baud_rate)
 
 directoryBase = "{}/{}/Bucket {}/CH4".format(args.filename, (time.strftime("%m-%d-%Y")), args.containernumber)
 pathlib.Path(directoryBase).mkdir(parents=True, exist_ok=True)
-logFileCH4 = '{}/CH4_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H;%M;%S"))
+logFileCH4 = '{}/CH4_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))
 
 overallList = []
 count = 0
@@ -139,4 +139,4 @@ while True:
         overallList = [0,0]
         startTime = time.time()
         logFileCH4 = '{}/CH4_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber,
-                                                              time.strftime("%m-%d-%Y"), time.strftime("%H;%M;%S"))
+                                                              time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))

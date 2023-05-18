@@ -21,8 +21,8 @@ baud_rate = 9600
 CO2Serial = serial.Serial(CO2Port, baud_rate, timeout=1)
 directoryBase = "{}/{}/Bucket {}/CO2".format(args.filename, time.strftime("%m-%d-%Y"), args.containernumber)
 pathlib.Path(directoryBase).mkdir(parents=True, exist_ok=True)
-logFileCO2  = '{}/CO2_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H;%M;%S"))
-csvCO2 = '{}/CO2_Bucket_{}_{}_{}.csv'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H;%M;%S"))
+logFileCO2  = '{}/CO2_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))
+csvCO2 = '{}/CO2_Bucket_{}_{}_{}.csv'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))
 
 count = 0
 bytearray = []
@@ -87,6 +87,6 @@ while 1:
         overallList = [0,0]
         startTime = time.time()
         logFileCO2 = '{}/CO2_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber,
-                                                              time.strftime("%m-%d-%Y"), time.strftime("%H;%M;%S"))
+                                                              time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))
         csvCO2 = '{}/CO2_Bucket_{}_{}_{}.csv'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"),
-                                                      time.strftime("%H;%M;%S"))
+                                                      time.strftime("%H--%M--%S"))

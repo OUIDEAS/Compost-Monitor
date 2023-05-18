@@ -25,7 +25,7 @@ baud_rate = 9600
 PMQSerial = serial.Serial(port, baud_rate, timeout=1)
 directoryBase = "{}/{}/Bucket {}/PMQ".format(args.filename, time.strftime("%m-%d-%Y"), args.containernumber)
 pathlib.Path(directoryBase).mkdir(parents=True, exist_ok=True)
-logFilePMQ= '{}/PMQ_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H;%M;%S"))
+logFilePMQ= '{}/PMQ_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))
 
 fileCount = 1
 count = 0
@@ -117,5 +117,5 @@ while 1:
         PMQ_DataList = []
         startTime = time.time()
         logFilePMQ = '{}/PMQ_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber,
-                                                              time.strftime("%m-%d-%Y"), time.strftime("%H;%M;%S"))
+                                                              time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))
         fileCount += 1

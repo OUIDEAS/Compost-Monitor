@@ -91,15 +91,15 @@ while True:
             ## and prepare to start over
             if (packetcount == packetsize + 1):
                 wholeInput = b''.join(barray)
-                print(wholeInput)
+                # print(wholeInput)
 
                 unpack = struct.unpack('>BBBHHB', wholeInput)
-                print(unpack)
+                # print(unpack)
 
                 overallList.append(datetime.datetime.now())
                 for i in range(len(unpack)):
                     overallList.append(str(unpack[i]))
-                print(overallList)
+                # print(overallList)
 
                 methane_DataDict = {'Date_Time': overallList[0], 'Parse_1': overallList[1], 'Parse_2': overallList[2],
                                     'Parse_3': overallList[3], 'Methane Con': overallList[4], 'Parse_5': overallList[5],
@@ -126,7 +126,7 @@ while True:
                 barray = []
                 overallList = []
 
-                print('lencount and packetsize:', lencount, packetsize)
+                # print('lencount and packetsize:', lencount, packetsize)
                 lencount = 0
 
                 count += 1

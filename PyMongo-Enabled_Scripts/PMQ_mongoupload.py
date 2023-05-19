@@ -16,10 +16,6 @@ parser.add_argument('-e', '--experimentnumber')
 args = parser.parse_args()
 
 
-
-# args.comport = '/dev/ttyACM0'
-# args.filename = '/home/dan/TestData'
-# args.containernumber = 2
 port = ''.join(args.comport)
 baud_rate = 9600
 PMQSerial = serial.Serial(port, baud_rate, timeout=1)
@@ -58,7 +54,7 @@ while 1:
     bytearray.append(PMQ_inbyte)
 
     if (fileCount ==1 and count >= 1 and PMQ_inbyte == b'\n'):
-        print(bytearray)
+        # print(bytearray)
         bytearray.pop()
         PMQ_DataSplit = ''.join(str(bytearray)).replace(" ", "").replace('b', '').replace("'", '').replace(",",'')\
             .replace('[', '').replace(']', '').split(';')
@@ -66,9 +62,9 @@ while 1:
         for i in range(len(PMQ_DataSplit)):
             PMQ_DataList.append(PMQ_DataSplit[i])
         # print(PMQ_DataList)
-        PMQ_DataDict = {'Date_Time': PMQ_DataList[0], 'TVOC Con': PMQ_DataList[1], 'BME Humidity': PMQ_DataList[2],
-                        'BME Pressure': PMQ_DataList[3], 'BME Temp': PMQ_DataList[4], 'Sensor': 'PMQ',
-                        'Container No': args.containernumber, 'Experiment No': args.experimentnumber}
+        PMQ_DataDict = {'Date_Time': PMQ_DataList[0], 'TVOC_Con': PMQ_DataList[1], 'BME_Humidity': PMQ_DataList[2],
+                        'BME_Pressure': PMQ_DataList[3], 'BME_Temp': PMQ_DataList[4], 'Sensor': 'PMQ',
+                        'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
         print('PMQ in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
         if startup:
             p.start()
@@ -84,7 +80,7 @@ while 1:
         count += 1
 
     if (fileCount >= 2 and PMQ_inbyte == b'\n'):
-        print(bytearray)
+        # print(bytearray)
     # if PMQ_inbyte == b'\n':
         #split it up
         bytearray.pop()
@@ -93,9 +89,9 @@ while 1:
         PMQ_DataList.append(datetime.datetime.now())
         for i in range(len(PMQ_DataSplit)):
             PMQ_DataList.append(PMQ_DataSplit[i])
-        print(PMQ_DataList)
-        PMQ_DataDict = {'Date_Time': PMQ_DataList[0], 'TVOC Con': PMQ_DataList[1], 'BME Humidity': PMQ_DataList[2],
-                       'BME Pressure': PMQ_DataList[3], 'BME Temp': PMQ_DataList[4]}
+        # print(PMQ_DataList)
+        PMQ_DataDict = {'Date_Time': PMQ_DataList[0], 'TVOC_Con': PMQ_DataList[1], 'BME_Humidity': PMQ_DataList[2],
+                       'BME_Pressure': PMQ_DataList[3], 'BME_Temp': PMQ_DataList[4]}
         if startup:
             p.start()
             startup= False

@@ -102,9 +102,9 @@ while True:
                 # print(overallList)
 
                 methane_DataDict = {'Date_Time': overallList[0], 'Parse_1': overallList[1], 'Parse_2': overallList[2],
-                                    'Parse_3': overallList[3], 'Methane Con': overallList[4], 'Parse_5': overallList[5],
+                                    'Parse_3': overallList[3], 'Methane_Con': overallList[4], 'Parse_5': overallList[5],
                                     'Parse_6': overallList[6], 'Sensor': 'Methane',
-                                    'Container No': args.containernumber, 'Experiment No': args.experimentnumber}
+                                    'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
                 print('Methane in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
 
                 if __name__ == '__main__':

@@ -66,6 +66,7 @@ while 1:
                         'BME_Pressure': PMQ_DataList[3], 'BME_Temp': PMQ_DataList[4], 'Sensor': 'PMQ',
                         'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
         print('PMQ in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
+        print(PMQ_DataDict)
         if startup:
             p.start()
             startup= False
@@ -92,6 +93,7 @@ while 1:
         # print(PMQ_DataList)
         PMQ_DataDict = {'Date_Time': PMQ_DataList[0], 'TVOC_Con': PMQ_DataList[1], 'BME_Humidity': PMQ_DataList[2],
                        'BME_Pressure': PMQ_DataList[3], 'BME_Temp': PMQ_DataList[4]}
+        print(PMQ_DataDict)
         if startup:
             p.start()
             startup= False

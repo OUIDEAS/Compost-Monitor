@@ -19,6 +19,7 @@ class monitor_output:
             self.marker = True
 
 # def pull_data():
+startTime = datetime.datetime.now()
 C1_TVOC = collection.find({
                     'Container_No': '1', 
                     'TVOC_Con': {'$exists': 'True'}
@@ -191,5 +192,9 @@ for i in range(4):
     for j in range(5):
         update_square_color(i, j)
 
+
+endTime = datetime.datetime.now()
+totalTime = endTime - startTime
+print(f'TKIntergui.py took {totalTime} to open the gui.')
 # Start the Tkinter event loop
 window.mainloop()

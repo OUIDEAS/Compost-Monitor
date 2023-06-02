@@ -2,350 +2,156 @@ import tkinter as tk
 import pymongo
 import pandas
 import datetime
-import threading
-
-startupTime = datetime.datetime.now()
 
 client = pymongo.MongoClient("mongodb://100.110.90.28/")
 db = client['CompostMonitor']
 collection = db['Overall']
 
-C1_TVOC = []
-C1_BME = []
-C1_CO2 = []
-C1_O2 = []
-C1_Meth = []
-C2_TVOC = []
-C2_BME = []
-C2_CO2 = []
-C2_O2 = []
-C2_Meth = []
-C3_TVOC = []
-C3_BME = []
-C3_CO2 = []
-C3_O2 = []
-C3_Meth = []
-C4_TVOC = []
-C4_BME = []
-C4_CO2 = []
-C4_O2 = []
-C4_Meth = []
+class monitor_output:
+    def __init__(self, data):
+        self.pandas_df = pandas.DataFrame(data)
+        self.lastdate = self.pandas_df.Date_Time[0]
+        self.lastdate.to_pydatetime()
+        self.timedelta = datetime.datetime.now() - self.lastdate
+        if (self.timedelta.total_seconds() >= 5.0):
+            self.marker = False
+        else:
+            self.marker = True
 
-C1_TVOC_marker = False
-C1_BME_marker = False
-C1_CO2_marker = False
-C1_O2_marker = False
-C1_Meth_marker = False
-C2_TVOC_marker = False
-C2_BME_marker = False
-C2_CO2_marker = False
-C2_O2_marker = False
-C2_Meth_marker = False
-C3_TVOC_marker = False
-C3_BME_marker = False
-C3_CO2_marker = False
-C3_O2_marker = False
-C3_Meth_marker = False
-C4_TVOC_marker = False
-C4_BME_marker = False
-C4_CO2_marker = False
-C4_O2_marker = False
-C4_Meth_marker = False
-
-def pull_data(Sensor):
-    global C1_TVOC_marker, C1_BME_marker, C1_CO2_marker, C1_O2_marker, C1_Meth_marker
-    global C2_TVOC_marker, C2_BME_marker, C2_CO2_marker, C2_O2_marker, C2_Meth_marker
-    global C3_TVOC_marker, C3_BME_marker, C3_CO2_marker, C3_O2_marker, C3_Meth_marker
-    global C4_TVOC_marker, C4_BME_marker, C4_CO2_marker, C4_O2_marker, C4_Meth_marker
-
-    match Sensor:
-        case "TVOC":
-            C1_TVOC.append(collection.find({
-                            'Container_No': '1', 
-                            'TVOC_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C1_TVOC[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C1_TVOC_marker = False
-            else:
-                C1_TVOC_marker = True
-            C2_TVOC.append(collection.find({
-                            'Container_No': '2', 
-                            'TVOC_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C2_TVOC[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C2_TVOC_marker = False
-            else:
-                C2_TVOC_marker = True
-            C3_TVOC.append(collection.find({
-                            'Container_No': '3', 
-                            'TVOC_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C3_TVOC[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C3_TVOC_marker = False
-            else:
-                C3_TVOC_marker = True
-            C4_TVOC.append(collection.find({
-                            'Container_No': '4', 
-                            'TVOC_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C4_TVOC[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C4_TVOC_marker = False
-            else:
-                C4_TVOC_marker = True
-        case "BME":
-            C1_BME.append(collection.find({
-                            'Container_No': '1', 
-                            'BME_Humidity': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C1_BME[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C1_BME_marker = False
-            else:
-                C1_BME_marker = True
-            C2_BME.append(collection.find({
-                            'Container_No': '2', 
-                            'BME_Humidity': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C2_BME[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C2_BME_marker = False
-            else:
-                C2_BME_marker = True
-            C3_BME.append(collection.find({
-                            'Container_No': '3', 
-                            'BME_Humidity': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C3_BME[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C3_BME_marker = False
-            else:
-                C3_BME_marker = True
-            C4_BME.append(collection.find({
-                            'Container_No': '4', 
-                            'BME_Humidity': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C4_BME[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C4_BME_marker = False
-            else:
-                C4_BME_marker = True
-        case "CO2":
-            C1_CO2.append(collection.find({
-                            'Container_No': '1', 
-                            'CO2_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C1_CO2[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C1_CO2_marker = False
-            else:
-                C1_CO2_marker = True
-            C2_CO2.append(collection.find({
-                            'Container_No': '2', 
-                            'CO2_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C2_CO2[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C2_CO2_marker = False
-            else:
-                C2_CO2_marker = True
-            C3_CO2.append(collection.find({
-                            'Container_No': '3', 
-                            'CO2_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C3_CO2[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C3_CO2_marker = False
-            else:
-                C3_CO2_marker = True
-            C4_CO2.append(collection.find({
-                            'Container_No': '4', 
-                            'CO2_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C4_CO2[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C4_CO2_marker = False
-            else:
-                C4_CO2_marker = True
-        case "O2":
-            C1_O2.append(collection.find({
-                            'Container_No': '1', 
-                            'O2_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C1_O2[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C1_O2_marker = False
-            else:
-                C1_O2_marker = True
-            C2_O2.append(collection.find({
-                            'Container_No': '2', 
-                            'O2_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C2_O2[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C2_O2_marker = False
-            else:
-                C2_O2_marker = True
-            C3_O2.append(collection.find({
-                            'Container_No': '3', 
-                            'O2_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C3_O2[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C3_O2_marker = False
-            else:
-                C3_O2_marker = True
-            C4_O2.append(collection.find({
-                            'Container_No': '4', 
-                            'O2_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C4_O2[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C4_O2_marker = False
-            else:
-                C4_O2_marker = True
-        case "Methane":
-            C1_Meth.append(collection.find({
-                            'Container_No': '1', 
-                            'Methane_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C1_Meth[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C1_Meth_marker = False
-            else:
-                C1_Meth_marker = True
-            C2_Meth.append(collection.find({
-                            'Container_No': '2', 
-                            'Methane_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C2_Meth[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C2_Meth_marker = False
-            else:
-                C2_Meth_marker = True
-            C3_Meth.append(collection.find({
-                            'Container_No': '3', 
-                            'Methane_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C3_Meth[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C3_Meth_marker = False
-            else:
-                C3_Meth_marker = True
-            C4_Meth.append(collection.find({
-                            'Container_No': '4', 
-                            'Methane_Con': {'$exists': 'True'}
-                            }).sort("Date_Time", pymongo.DESCENDING).limit(1))
-            pandas_df = pandas.DataFrame(C4_Meth[0])
-            lastdate = pandas_df.Date_Time[0]
-            lastdate.to_pydatetime()
-            timedelta = datetime.datetime.now() - lastdate
-            if (timedelta.total_seconds() >= 5.0):
-                C4_Meth_marker = False
-            else:
-                C4_Meth_marker = True
-        case _:
-            print('Invalid Sensor Name; valid names are TVOC, BME, CO2, O2, and Methane.')
+# def pull_data():
+startTime = datetime.datetime.now()
+C1_TVOC = collection.find({
+                    'Container_No': '1', 
+                    'TVOC_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
 
 
+C1_BME = collection.find({
+                    'Container_No': '1', 
+                    'BME_Humidity': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
 
-if __name__ == "__main__":
-    startTime_main = datetime.datetime.now()
-    #create thread
-    t1 = threading.Thread(target=pull_data, args = ('TVOC',))
-    t2 = threading.Thread(target=pull_data, args = ('BME',))
-    t3 = threading.Thread(target=pull_data, args = ('CO2',))
-    t4 = threading.Thread(target=pull_data, args = ('O2',))
-    t5 = threading.Thread(target=pull_data, args = ('Methane',))
+C1_CO2 = collection.find({
+                    'Container_No': '1', 
+                    'CO2_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
 
-    t1.start()
-    t2.start()
-    t3.start()
-    t4.start()
-    t5.start()
+C1_O2 = collection.find({
+                    'Container_No': '1', 
+                    'O2_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
 
-    t1.join()
-    t2.join()
-    t3.join()
-    t4.join()
-    t5.join()
+C1_meth = collection.find({
+                    'Container_No': '1', 
+                    'Methane_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
 
-    endTime_main = datetime.datetime.now()
-    totalTime_main = endTime_main - startTime_main
-    print(f'if name = main block executed in {totalTime_main}')
+C2_TVOC = collection.find({
+                    'Container_No': '2', 
+                    'TVOC_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
 
-startTime_main = datetime.datetime.now()
+C2_BME = collection.find({
+                    'Container_No': '2', 
+                    'BME_Humidity': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
 
-endTime_main = datetime.datetime.now()
-totalTime_main = endTime_main - startTime_main
-print(f'markers block executed in {totalTime_main}')
+C2_CO2 = collection.find({
+                    'Container_No': '2', 
+                    'CO2_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+
+C2_O2 = collection.find({
+                    'Container_No': '2', 
+                    'O2_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+
+C2_meth = collection.find({
+                    'Container_No': '2', 
+                    'Methane_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+
+C3_TVOC = collection.find({
+                    'Container_No': '3', 
+                    'TVOC_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+
+C3_BME = collection.find({
+                    'Container_No': '3', 
+                    'BME_Humidity': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+
+C3_CO2 = collection.find({
+                    'Container_No': '3', 
+                    'CO2_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+
+C3_O2 = collection.find({
+                    'Container_No': '3', 
+                    'O2_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+
+C3_meth = collection.find({
+                    'Container_No': '3', 
+                    'Methane_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+
+C4_TVOC = collection.find({
+                    'Container_No': '4', 
+                    'TVOC_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+
+C4_BME = collection.find({
+                    'Container_No': '4', 
+                    'BME_Humidity': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+
+C4_CO2 = collection.find({
+                    'Container_No': '4', 
+                    'CO2_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+
+C4_O2 = collection.find({
+                    'Container_No': '4', 
+                    'O2_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+
+C4_meth = collection.find({
+                    'Container_No': '4', 
+                    'Methane_Con': {'$exists': 'True'}
+                    }).sort("Date_Time", pymongo.DESCENDING).limit(1)
+    
+    # return C1_TVOC, C1_BME, C1_CO2, C1_O2, C1_meth, C2_TVOC, C2_BME, C2_CO2, C2_O2, C2_meth, C3_TVOC, C3_BME, C3_CO2, C3_O2, C3_meth, C4_TVOC, C4_BME, C4_CO2, C4_O2, C4_meth
+
+# pull_data()
+
+C1_TVOC_marker = monitor_output(C1_TVOC)
+C1_BME_marker = monitor_output(C1_BME)
+C1_CO2_marker = monitor_output(C1_CO2)
+C1_O2_marker = monitor_output(C1_O2)
+C1_Meth_marker = monitor_output(C1_meth)
+C2_TVOC_marker = monitor_output(C2_TVOC)
+C2_BME_marker = monitor_output(C2_BME)
+C2_CO2_marker = monitor_output(C2_CO2)
+C2_O2_marker = monitor_output(C2_O2)
+C2_Meth_marker = monitor_output(C2_meth)
+C3_TVOC_marker = monitor_output(C3_TVOC)
+C3_BME_marker = monitor_output(C3_BME)
+C3_CO2_marker = monitor_output(C3_CO2)
+C3_O2_marker = monitor_output(C3_O2)
+C3_Meth_marker = monitor_output(C3_meth)
+C4_TVOC_marker = monitor_output(C4_TVOC)
+C4_BME_marker = monitor_output(C4_BME)
+C4_CO2_marker = monitor_output(C4_CO2)
+C4_O2_marker = monitor_output(C4_O2)
+C4_Meth_marker = monitor_output(C4_meth)
 
 sensorMarkers = [
-    [C1_TVOC_marker, C1_BME_marker, C1_CO2_marker, C1_O2_marker, C1_Meth_marker],
-    [C2_TVOC_marker, C2_BME_marker, C2_CO2_marker, C2_O2_marker, C2_Meth_marker],
-    [C3_TVOC_marker, C3_BME_marker, C3_CO2_marker, C3_O2_marker, C3_Meth_marker],
-    [C4_TVOC_marker, C4_BME_marker, C4_CO2_marker, C4_O2_marker, C4_Meth_marker]
-    ]
+    [C1_TVOC_marker.marker, C1_BME_marker.marker, C1_CO2_marker.marker, C1_O2_marker.marker, C1_Meth_marker.marker],
+    [C2_TVOC_marker.marker, C2_BME_marker.marker, C2_CO2_marker.marker, C2_O2_marker.marker, C2_Meth_marker.marker],
+    [C3_TVOC_marker.marker, C3_BME_marker.marker, C3_CO2_marker.marker, C3_O2_marker.marker, C3_Meth_marker.marker],
+    [C4_TVOC_marker.marker, C4_BME_marker.marker, C4_CO2_marker.marker, C4_O2_marker.marker, C4_Meth_marker.marker]
+]
 
 # Function to update the square color based on the variable value
 def update_square_color(section_index, square_index):
@@ -356,7 +162,7 @@ def update_square_color(section_index, square_index):
 
 # Create a Tkinter window
 window = tk.Tk()
-window.title("CM Sensor Status")
+window.title("Variable Sections")
 
 # Create variables and squares for each section
 my_variables = []
@@ -386,11 +192,9 @@ for i in range(4):
     for j in range(5):
         update_square_color(i, j)
 
-endtime = datetime.datetime.now()
 
-runTime = endtime - startupTime
-
-print(f'TKintergui.py took {runTime} to open the gui.')
-
+endTime = datetime.datetime.now()
+totalTime = endTime - startTime
+print(f'TKIntergui.py took {totalTime} to open the gui.')
 # Start the Tkinter event loop
 window.mainloop()

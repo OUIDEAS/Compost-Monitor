@@ -1,6 +1,3 @@
-## TODO: Minimal nesting, use an empty list of lists for sensor_markers instead of pre-defining values at start
-# import concurrent.futures
-
 import multiprocessing
 import pandas
 import datetime
@@ -29,19 +26,19 @@ def pull_data(container_no, sensor):
         match sensor:
             case 'TVOC_Con':
                 TVOC_markers[container_no - 1]      =   True
-                print(f'TVOC_markers changed at index {container_no - 1}\n')
+                # print(f'TVOC_markers changed at index {container_no - 1}\n')
             case 'BME_Humidity':
                 BME_markers[container_no - 1]       =   True
-                print(f'BME_markers changed at index {container_no - 1}\n')
+                # print(f'BME_markers changed at index {container_no - 1}\n')
             case 'CO2_Con':
                 CO2_markers[container_no - 1]       =   True
-                print(f'CO2_markers changed at index {container_no - 1}\n')
+                # print(f'CO2_markers changed at index {container_no - 1}\n')
             case 'O2_Con':
                 O2_markers[container_no - 1]        =   True
-                print(f'O2_markers changed at index {container_no - 1}\n')
+                # print(f'O2_markers changed at index {container_no - 1}\n')
             case 'Methane_Con':
                 Methane_markers[container_no - 1]   =   True
-                print(f'Methane_markers changed at index {container_no - 1}\n')
+                # print(f'Methane_markers changed at index {container_no - 1}\n')
             case _:
                 print(f'{sensor} is not a valid sensor. Check your sensor_names variable.')
 
@@ -75,10 +72,10 @@ if __name__ == '__main__':
             print(f'Process {process_index} starting...\n')
             process.start()
 
-        for process_index, process in enumerate(processes):
-            process.join()
-            joined_processes.append(process_index)
-            print(f'Process {process_index} joined.\n')
+        # for process_index, process in enumerate(processes):
+        #     process.join()
+        #     joined_processes.append(process_index)
+        #     print(f'Process {process_index} joined.\n')
 
 
         # sensor_markers should go at the end
@@ -111,12 +108,11 @@ if __name__ == '__main__':
             var = tk.BooleanVar()
             var.set(sensor_markers[i][j])
             section_variables.append(var)
-            square = tk.Label(window, text=variable_names[i][j], width=10, height=5)
+            square = tk.Label(window, text=variable_names[i][j], width=20, height=10)
             square.grid(row=i, column=j, padx=5, pady=5)  # Use grid with appropriate row and column indices
             section_squares.append(square)
 
         my_variables.append(section_variables)
-        print(my_variables)
         squares.append(section_squares)
 
         # Update square colors after creating the section
@@ -131,47 +127,3 @@ if __name__ == '__main__':
 
     # Start the Tkinter event loop
     window.mainloop()
-
-    # GPT pool code:
-    # -------------------------------------------------------------------------------------#
-    # pool = multiprocessing.Pool()
-
-    # for container_no in range(1, 5):
-    #     for sensor_index, sensor in enumerate(sensor_names):
-    #         result = pool.apply_async(pull_data, args=(container_no, sensor))
-    #         processes.append(result)
-
-    # pool.close()
-
-    # # Retrieve results as they become available
-    # for process_index, result in enumerate(processes):
-    #     result.get()
-    #     joined_processes.append(process_index)
-    #     print(f'Process {process_index} joined.\n')
-
-    # pool.join()
-
-    #GPT concurrent.futures code:
-    #-------------------------------------------------------------------------------------#
-    # with concurrent.futures.ThreadPoolExecutor() as executor:
-    #     TVOC_markers    =   [False, False, False, False]
-    #     BME_markers     =   [False, False, False, False]
-    #     CO2_markers     =   [False, False, False, False]
-    #     O2_markers      =   [False, False, False, False]
-    #     Methane_markers =   [False, False, False, False]
-
-    #     sensor_names    =   ['TVOC_Con', 'BME_Humidity', 'CO2_Con', 'O2_Con', 'Methane_Con']
-
-    #     futures = []
-
-    #     for container_no in range(1, 5):
-    #         for sensor_index, sensor in enumerate(sensor_names):
-    #             future = executor.submit(pull_data, container_no, sensor)
-    #             futures.append(future)
-
-    #     # Retrieve results as they become available in the order of fastest completion
-    #     for future in concurrent.futures.as_completed(futures):
-    #         # container_no, sensor_index = future.args
-    #         future.result()
-    #         joined_processes.append((container_no, sensor_index))
-    #         print(f'Process {container_no} - {sensor_index} joined.\n')

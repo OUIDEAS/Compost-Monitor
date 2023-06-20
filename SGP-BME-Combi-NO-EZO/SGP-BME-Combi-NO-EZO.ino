@@ -1,12 +1,12 @@
-#include <SparkFunBME280.h>
-#include "SparkFun_SGP40_Arduino_Library.h" 
+#include <SparkFun_SGP40_Arduino_Library.h>
+#include <sensirion_arch_config.h>
+#include <sensirion_voc_algorithm.h>
+#include <SparkFunBME280.h> 
 #include <Wire.h>   
 
 #define printtab(x) Serial.print(String(x)+"\t");
 #define printline Serial.print("\n");
-
 #define delaytime 1000
-
 #define printtab(x) Serial.print(String(x) + "\t");
 
 

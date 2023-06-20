@@ -20,27 +20,28 @@ def pull_data(container_no, sensor):
     coll_datetime = collection_df.Date_Time[0]
     lastdate = coll_datetime.to_pydatetime()
     timedelta = datetime.datetime.now() - lastdate
-    print(timedelta)
 
     if (timedelta.total_seconds() < 5.0):
         match sensor:
             case 'TVOC_Con':
                 TVOC_markers[container_no - 1]      =   True
-                # print(f'TVOC_markers changed at index {container_no - 1}\n')
+                print(f'TVOC_markers changed at index {container_no - 1}\n')
             case 'BME_Humidity':
                 BME_markers[container_no - 1]       =   True
-                # print(f'BME_markers changed at index {container_no - 1}\n')
+                print(f'BME_markers changed at index {container_no - 1}\n')
             case 'CO2_Con':
                 CO2_markers[container_no - 1]       =   True
-                # print(f'CO2_markers changed at index {container_no - 1}\n')
+                print(f'CO2_markers changed at index {container_no - 1}\n')
             case 'O2_Con':
                 O2_markers[container_no - 1]        =   True
-                # print(f'O2_markers changed at index {container_no - 1}\n')
+                print(f'O2_markers changed at index {container_no - 1}\n')
             case 'Methane_Con':
                 Methane_markers[container_no - 1]   =   True
-                # print(f'Methane_markers changed at index {container_no - 1}\n')
+                print(f'Methane_markers changed at index {container_no - 1}\n')
             case _:
                 print(f'{sensor} is not a valid sensor. Check your sensor_names variable.')
+    else:
+        print(f'{sensor} in {container_no} lastdate: {lastdate}')
 
 def update_square_color(section_index, square_index):
     if my_variables[section_index][square_index].get():
@@ -72,13 +73,11 @@ if __name__ == '__main__':
             print(f'Process {process_index} starting...\n')
             process.start()
 
-        # for process_index, process in enumerate(processes):
-        #     process.join()
-        #     joined_processes.append(process_index)
-        #     print(f'Process {process_index} joined.\n')
+        for process_index, process in enumerate(processes):
+            process.join()
+            joined_processes.append(process_index)
+            print(f'Process {process_index} joined.\n')
 
-
-        # sensor_markers should go at the end
         sensor_markers = manager.list([TVOC_markers, BME_markers, CO2_markers, O2_markers, Methane_markers])
         sensor_markers = [list(sublist) for sublist in sensor_markers]
         print(f'Here are the sensor markers:\n {sensor_markers}\n')
@@ -94,11 +93,11 @@ if __name__ == '__main__':
     my_variables = []
     squares = []
     variable_names = [
-        ["Con.1 TVOC", "Con.1 BME", "Con.1 CO2", "Con.1 O2", "Con.1 Methane"],
-        ["Con.2 TVOC", "Con.2 BME", "Con.2 CO2", "Con.2 O2", "Con.2 Methane"],
-        ["Con.3 TVOC", "Con.3 BME", "Con.3 CO2", "Con.3 O2", "Con.3 Methane"],
-        ["Con.4 TVOC", "Con.4 BME", "Con.4 CO2", "Con.4 O2", "Con.4 Methane"]
-    ]
+                     ["Con.1 TVOC", "Con.1 BME", "Con.1 CO2", "Con.1 O2", "Con.1 Methane"],
+                     ["Con.2 TVOC", "Con.2 BME", "Con.2 CO2", "Con.2 O2", "Con.2 Methane"],
+                     ["Con.3 TVOC", "Con.3 BME", "Con.3 CO2", "Con.3 O2", "Con.3 Methane"],
+                     ["Con.4 TVOC", "Con.4 BME", "Con.4 CO2", "Con.4 O2", "Con.4 Methane"]
+                     ]
     variable_names = np.transpose(variable_names)
 
     for i in range(5):

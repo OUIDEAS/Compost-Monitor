@@ -122,7 +122,7 @@ if __name__ == '__main__':
 
     runTime = endtime - startupTime
 
-    print(f'TKintergui.py took {runTime} to open the gui.' )
+    print(f'TKintergui.py took {runTime} to open the gui.')
 
     # Start the Tkinter event loop
     window.mainloop()

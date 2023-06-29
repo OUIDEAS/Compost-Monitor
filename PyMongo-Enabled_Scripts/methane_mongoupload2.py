@@ -108,16 +108,16 @@ while True:
                                     'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
                 print('Methane in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
 
-                if __name__ == '__main__':
-                    if startup:
-                        p.start()
-                        startup = False
-                        print('startup == false')
-                    else:
-                        p.join()
-                        p.close()
-                        p = multiprocessing.Process(target=upload_to_database, args=(methane_DataDict,))
-                        p.start()
+                # if __name__ == '__main__':
+                #     if startup:
+                #         p.start()
+                #         startup = False
+                #         print('startup == false')
+                #     else:
+                #         p.join()
+                #         p.close()
+                #         p = multiprocessing.Process(target=upload_to_database, args=(methane_DataDict,))
+                #         p.start()
 
                 packetstart = False
                 packetsize = -1

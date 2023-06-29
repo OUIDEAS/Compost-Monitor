@@ -1,1 +1,11 @@
 PyMongo-Enabled_Scripts/test.py
+PyMongo-Enabled_Scripts/temp_csvs/Humidity_2.csv
+PyMongo-Enabled_Scripts/temp_csvs/Humidity_3.csv
+PyMongo-Enabled_Scripts/temp_csvs/Methane_1.csv
+PyMongo-Enabled_Scripts/temp_csvs/Methane_3.csv
+PyMongo-Enabled_Scripts/temp_csvs/Pressure_2.csv
+PyMongo-Enabled_Scripts/temp_csvs/Pressure_3.csv
+PyMongo-Enabled_Scripts/temp_csvs/Temp_2.csv
+PyMongo-Enabled_Scripts/temp_csvs/Temp_3.csv
+PyMongo-Enabled_Scripts/temp_csvs/TVOC_2.csv
+PyMongo-Enabled_Scripts/temp_csvs/TVOC_3.csv

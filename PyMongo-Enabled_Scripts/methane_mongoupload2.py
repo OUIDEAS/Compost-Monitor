@@ -62,7 +62,7 @@ def send_sms_via_email(
         message: str,
         provider: str, 
         sender_credentials: tuple,
-        subject: str = "sent using Python",
+        subject: str = "Compost Monitor Reports",
         smtp_server = "smtp.gmail.com",
         smtp_port: int = 465,
 ):
@@ -74,6 +74,10 @@ def send_sms_via_email(
     with smtplib.SMTP_SSL(smtp_server, smtp_port, context=ssl.create_default_context()) as email:
         email.login(sender_email, email_password)
         email.sendmail(sender_email, receiver_email, email_message)
+
+number = "4407498307"
+provider = "T-Mobile"
+sender_credentials = ("ideascompostmonitor@gmail.com", "uptrrccfbehyrxso")
 
 read_command = (b'\x11\x01\x01\xED')
 while True:
@@ -108,6 +112,17 @@ while True:
                         lencount = 0
                     else:
                         packetstart = True
+                
+                ## parse error codes
+                if (lencount == 6 and newb != b'\x00'):
+                    newb_bin = int(newb, 16)
+                    bStr = ''
+                    while newb_bin > 0:
+                        bStr = str(newb_bin % 2) + bStr
+                        newb_bin = newb_bin >> 1   
+                    errorcode = bStr
+                    message = f"Methane sensor in container {args.containernumber} has encountered an issue. Error code {errorcode}"
+                    send_sms_via_email(number, message, provider, sender_credentials)
 
                 ## if the packetcount and the size of the packet match, the word is finished - now time to decode
                 ## and prepare to start over
@@ -163,9 +178,5 @@ while True:
                                                                 time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))
 
     except Exception as e:
-        number = "4407498307"
         message = f"Methane sensor in container {args.containernumber} has encountered an issue: {Exception}"
-        provider = "T-Mobile"
-        sender_credentials = ("ideascompostmonitor@gmail.com", "uptrrccfbehyrxso")
-
         send_sms_via_email(number, message, provider, sender_credentials)

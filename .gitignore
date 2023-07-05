@@ -9,3 +9,4 @@ PyMongo-Enabled_Scripts/temp_csvs/Temp_2.csv
 PyMongo-Enabled_Scripts/temp_csvs/Temp_3.csv
 PyMongo-Enabled_Scripts/temp_csvs/TVOC_2.csv
 PyMongo-Enabled_Scripts/temp_csvs/TVOC_3.csv
+PyMongo-Enabled_Scripts/reading_json.py

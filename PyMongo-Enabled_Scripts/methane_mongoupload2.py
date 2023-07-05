@@ -169,6 +169,8 @@ while True:
 
                     count += 1
 
+                    time.sleep(4)
+
         if time.time() - startTime >= 3600:
             count = 0
             DataList = []

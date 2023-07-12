@@ -2,6 +2,7 @@ import pandas as pd
 import pymongo
 import multiprocessing as mp
 import datetime
+import time
 
 client = pymongo.MongoClient("mongodb://100.110.90.28/")
 db = client['CompostMonitor']
@@ -11,13 +12,13 @@ def pull_data(container_no, sensor):
     data = collection.find({
                             'Container_No': str(container_no),
                             sensor: {'$exists': 'True'}
-                            }).sort("_id", pymongo.ASCENDING).limit(1500)
+                            }).sort("_id", pymongo.ASCENDING)
     collection_df = pd.DataFrame(data)
 
     match sensor:
         case 'TVOC_Con':
             TVOC_df = collection_df[['Date_Time', 'TVOC_Con']]
-            TVOC_df.to_csv(f'/home/dan/CompostMonitor_git/Compost-Monitor/PyMongo-Enabled_Scripts/temp_csvs/TVOC_{container_no}.csv')
+            TVOC_df.to_csv(f'/home/dan/Desktop/CSVs/{time.strftime("%m-%d-%Y")}/TVOC_{container_no}.csv')
         case 'CO2_Con':
             CO2_df = collection_df[['Date_Time', 'CO2_Con']]
             CO2_df.to_csv(f'/home/dan/CompostMonitor_git/Compost-Monitor/PyMongo-Enabled_Scripts/temp_csvs/CO2_{container_no}.csv')

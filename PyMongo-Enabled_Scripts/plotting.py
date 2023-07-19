@@ -8,6 +8,7 @@ import matplotlib.dates as mdates
 import pathlib
 import argparse
 import numpy as np
+import datetime
 
 client = pymongo.MongoClient("mongodb://100.110.90.28/")
 db = client['CompostMonitor']
@@ -15,6 +16,7 @@ collection = db['Overall']
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--sensor')
+parser.add_argument('-n', '--number', default = 'All')
 args = parser.parse_args()
 
 def emptycells(data):
@@ -33,10 +35,17 @@ def deleteExtras(data, count):
     return data
 
 def pull_data(container_no, sensor):
+    if isinstance(args.number, int):
+        limit = args.number
+    else:
+        limit = 10**9
     data = collection.find({
-                            'Container_No': str(container_no),
-                            sensor: {'$exists': 'True'}
-                            }).sort("_id", pymongo.ASCENDING)
+                            '$and':[
+                                    {'Container_No': str(container_no)},
+                                    {sensor: {'$exists': 'True'}},
+                                    {'Date_Time': {'$exists': 'True'}},
+                                    {'Date_Time': {'$gt': datetime.datetime(2022, 1, 1, 0, 0, 1)}}]
+                                                                          }).sort("Date_Time", pymongo.DESCENDING).limit(limit)
     collection_df = pandas.DataFrame(data)
 
     match sensor:
@@ -47,12 +56,12 @@ def pull_data(container_no, sensor):
             TVOC_Data[container_no - 1]     = [value for value in TVOC_Data[container_no - 1] if value != '' and value != None]
             TVOC_Data[container_no - 1]     = [float(value) for value in TVOC_Data[container_no - 1]]
             TVOC_Dates[container_no - 1]    = collection_df.Date_Time
-            # print(len(TVOC_Dates[container_no - 1]), len(TVOC_Data[container_no - 1]))
-            # diff = len(TVOC_Dates[container_no - 1]) - len(TVOC_Data[container_no - 1])
-            # try:
-            #     deleteExtras(TVOC_Dates[container_no - 1], diff)
-            # except:
-            #     deleteExtras(TVOC_Data[container_no - 1], diff)
+            print(len(TVOC_Dates[container_no - 1]), len(TVOC_Data[container_no - 1]))
+            diff = len(TVOC_Dates[container_no - 1]) - len(TVOC_Data[container_no - 1])
+            try:
+                deleteExtras(TVOC_Dates[container_no - 1], diff)
+            except:
+                deleteExtras(TVOC_Data[container_no - 1], diff)
         case 'CO2_Con':
             # collection_df                   = emptycells(collection_df)
             CO2_Data[container_no - 1]      = collection_df.CO2_Con
@@ -98,6 +107,13 @@ def pull_data(container_no, sensor):
             Methane_Dates[container_no - 1] = collection_df.Date_Time
             diff = len(Methane_Dates[container_no - 1]) - len(Methane_Data[container_no - 1])
             deleteExtras(Methane_Dates[container_no - 1], diff)
+            for index, date in enumerate(Methane_Dates[container_no - 1]):
+                if '1970' in str(date):
+                    print(f'the 1970 date is in index {index} of Methane_Data')
+            # print(Methane_Data[container_no - 1])
+            # input()
+            print('Methane Dates:', Methane_Dates[container_no - 1])
+            input()
         case _:
             print(f'{sensor} is not a valid sensor name. Check your sensorNames variable.')
 
@@ -187,7 +203,7 @@ if __name__ == '__main__':
             # plots(data_sets[1], "TVOC versus Time - Container 2", "Time", "TVOC (ppb)", f"{directoryBase}/TVOC_2.png")
             # plots(data_sets[2], "TVOC versus Time - Container 3", "Time", "TVOC (ppb)", f"{directoryBase}/TVOC_3.png")
             # plots(data_sets[3], "TVOC versus Time - Container 4", "Time", "TVOC (ppb)", f"{directoryBase}/TVOC_4.png")
-            plots(data_sets, "TVOC versus Time", "Time", "TVOC (ppb)", f"{directoryBase}/TVOC_All.png")
+            plots(data_sets, "TVOC versus Time", "Time", "TVOC (ppb)", f"{directoryBase}/TVOC_{args.number}.png")
         elif(args.sensor == 'CO2_Con'):
             data_sets = []
             data_sets.append((CO2_Dates[0], CO2_Data[0], 'CO2 Con. - Container 1'))
@@ -198,7 +214,7 @@ if __name__ == '__main__':
             # plots(data_sets[1], "CO2 Concentration versus Time - Container 2", "Time", "CO2 Concentration (ppm)", f"{directoryBase}/CO2_2.png")
             # plots(data_sets[2], "CO2 Concentration versus Time - Container 3", "Time", "CO2 Concentration (ppm)", f"{directoryBase}/CO2_3.png")
             # plots(data_sets[3], "CO2 Concentration versus Time - Container 4", "Time", "CO2 Concentration (ppm)", f"{directoryBase}/CO2_4.png")
-            plots(data_sets, "CO2 Concentration versus Time", 'Time', 'CO2 Concentration (ppm)', f"{directoryBase}/CO2_All_2.png")
+            plots(data_sets, "CO2 Concentration versus Time", 'Time', 'CO2 Concentration (ppm)', f"{directoryBase}/CO2_{args.number}.png")
         elif(args.sensor == 'O2_Con'):
             data_sets = []
             data_sets.append((O2_Dates[0], O2_Data[0], 'O2 Con. - Container 1'))
@@ -209,7 +225,7 @@ if __name__ == '__main__':
             # plots(data_sets[1], "O2 Concentration versus Time - Container 2", "Time", "O2 Concentration (%)", f"{directoryBase}/O2_2.png")
             # plots(data_sets[2], "O2 Concentration versus Time - Container 3", "Time", "O2 Concentration (%)", f"{directoryBase}/O2_3.png")
             # plots(data_sets[3], "O2 Concentration versus Time - Container 4", "Time", "O2 Concentration (%)", f"{directoryBase}/O2_4.png")
-            plots(data_sets, "O2 Concentration versus Time", 'Time', 'O2 Concentration (%)', f"{directoryBase}/O2_All.png")
+            plots(data_sets, "O2 Concentration versus Time", 'Time', 'O2 Concentration (%)', f"{directoryBase}/O2_{args.number}.png")
         elif(args.sensor == 'BME_Humidity'):
             data_sets = []
             data_sets.append((BME_Dates[0], Humidity_Data[0], 'Relative Humidity - Container 1'))
@@ -220,7 +236,7 @@ if __name__ == '__main__':
             # plots(data_sets[1], "Relative Humidity versus Time - Container 2", "Time", "Relative Humidity (%)", f"{directoryBase}/Hum_2.png")
             # plots(data_sets[2], "Relative Humidity versus Time - Container 3", "Time", "Relative Humidity (%)", f"{directoryBase}/Hum_3.png")
             # plots(data_sets[3], "Relative Humidity versus Time - Container 4", "Time", "Relative Humidity (%)", f"{directoryBase}/Hum_4.png")
-            plots(data_sets, "Relative Humidity versus Time", 'Time', 'Relative Humidity (%)', f"{directoryBase}/Hum_All_2.png")
+            plots(data_sets, "Relative Humidity versus Time", 'Time', 'Relative Humidity (%)', f"{directoryBase}/Hum_{args.number}.png")
         elif(args.sensor == 'BME_Temp'):
             data_sets = []
             data_sets.append((BME_Dates[0], Temp_Data[0], 'Temperature - Container 1'))
@@ -231,7 +247,7 @@ if __name__ == '__main__':
             # plots(data_sets[1], "Temperature versus Time - Container 2", "Time", f"Temperature ({degree_sign}C)", f"{directoryBase}/Temp_2.png")
             # plots(data_sets[2], "Temperature versus Time - Container 3", "Time", f"Temperature ({degree_sign}C)", f"{directoryBase}/Temp_3.png")
             # plots(data_sets[3], "Temperature versus Time - Container 4", "Time", f"Temperature ({degree_sign}C)", f"{directoryBase}/Temp_4.png")
-            plots(data_sets, "Temperature versus Time", 'Time', f"Temperature ({degree_sign}C)", f"{directoryBase}/Temp_All.png")
+            plots(data_sets, "Temperature versus Time", 'Time', f"Temperature ({degree_sign}C)", f"{directoryBase}/Temp_{args.number}.png")
         elif(args.sensor == 'BME_Pressure'):
             data_sets = []
             data_sets.append((BME_Dates[0], Pressure_Data[0], 'Pressure - Container 1'))
@@ -242,7 +258,7 @@ if __name__ == '__main__':
             # plots(data_sets[1], "Pressure versus Time - Container 2", "Time", "Pressure (Pa)", f"{directoryBase}/Pressure_2.png")
             # plots(data_sets[2], "Pressure versus Time - Container 3", "Time", "Pressure (Pa)", f"{directoryBase}/Pressure_3.png")
             # plots(data_sets[3], "Pressure versus Time - Container 4", "Time", "Pressure (Pa)", f"{directoryBase}/Pressure_4.png")
-            plots(data_sets, "Pressure versus Time", 'Time', "Pressure (Pa)", f"{directoryBase}/Pressure_All.png")
+            plots(data_sets, "Pressure versus Time", 'Time', "Pressure (Pa)", f"{directoryBase}/Pressure_{args.number}.png")
         elif(args.sensor == 'Methane_Con'):
             data_sets = []
             data_sets.append((Methane_Dates[0], Methane_Data[0], 'Methane Con. - Container 1'))
@@ -253,5 +269,5 @@ if __name__ == '__main__':
             # plots(data_sets[1], "Methane Concentration versus Time - Container 2", "Time", "Methane Concentration (% Volume)", f"{directoryBase}/Methane_1.png")
             # plots(data_sets[2], "Methane Concentration versus Time - Container 3", "Time", "Methane Concentration (% Volume)", f"{directoryBase}/Methane_1.png")
             # plots(data_sets[3], "Methane Concentration versus Time - Container 4", "Time", "Methane Concentration (% Volume)", f"{directoryBase}/Methane_1.png")
-            plots(data_sets, "Methane Concentration versus Time", 'Time', 'Methane Concentration (% Volume)', f"{directoryBase}/Methane_All.png")
-        plt.show()
+            plots(data_sets, "Methane Concentration versus Time", 'Time', 'Methane Concentration (% Volume)', f"{directoryBase}/Methane_{args.number}.png")
+        # plt.show()

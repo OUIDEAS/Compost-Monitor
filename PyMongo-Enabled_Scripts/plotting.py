@@ -17,6 +17,8 @@ collection = db['Overall']
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--sensor')
 parser.add_argument('-n', '--number', default = 'All')
+parser.add_argument('-c', '--containernumber', default = 'All')
+parser.add_argument('-t', '--saveSheet', default = 0)
 args = parser.parse_args()
 
 def emptycells(data):
@@ -75,6 +77,8 @@ def pull_data(container_no, sensor):
                 CO2_Dates[container_no - 1]     = deleteExtras(CO2_Dates[container_no - 1], diff)
             elif (diff < 0):
                 CO2_Data[container_no - 1]      = deleteExtras(CO2_Data[container_no - 1], diff)
+            if (int(args.saveSheet) == 1):
+                collection_df.to_excel('/home/dan/Desktop/CO2_Dataframe.xlsx', index = False)
             
         case 'O2_Con':
             O2_Data[container_no - 1]       = collection_df.O2_Con
@@ -131,7 +135,7 @@ def plots(data_sets, title, xaxistitle, yaxistitle, filename):
             x = data_set[0]
             y = data_set[1]
             legend_entry = data_set[2]
-            print(len(x), len(y))
+            # print(x, y)
             x = [value for value in x if value != None and value != '']
             y = [value for value in y if value != None and value != '']
             

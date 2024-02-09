@@ -84,96 +84,47 @@ def pull_data(container_no, sensor, datelist):
             TVOC_Data[len(TVOC_Data)]                   = [item.replace('loopin""','') for item in TVOC_Data[container_no - 1]]
             TVOC_Data[len(TVOC_Data)]                   = [value for value in TVOC_Data[len(TVOC_Data)] if value != '' and value != None]
             TVOC_Data[len(TVOC_Data)]                   = [float(value) for value in TVOC_Data[len(TVOC_Data)]]
-            # collection_df                   = emptycells(collection_df)
-            # TVOC_Data[container_no - 1]     = collection_df.TVOC_Con
-            # TVOC_Data[container_no - 1]     = [item.replace('loopin""','') for item in TVOC_Data[container_no - 1]]
-            # TVOC_Data[container_no - 1]     = [value for value in TVOC_Data[container_no - 1] if value != '' and value != None]
-            # TVOC_Data[container_no - 1]     = [float(value) for value in TVOC_Data[container_no - 1]]
-            # TVOC_Dates[container_no - 1]    = collection_df.Date_Time
-            # print(len(TVOC_Dates[container_no - 1]), len(TVOC_Data[container_no - 1]))
-            # diff = len(TVOC_Dates[container_no - 1]) - len(TVOC_Data[container_no - 1])
-            # try:
-            #     deleteExtras(TVOC_Dates[container_no - 1], diff)
-            # except:
-            #     deleteExtras(TVOC_Data[container_no - 1], diff)
+
         case 'CO2_Con':
             CO2_Data.append(collection_df.Date_Time)
             CO2_Data.append(collection_df.CO2_Con)
             CO2_Data[len(CO2_Data)]                   = [item.replace('U', '').replace('V', '').replace('*','') for item in CO2_Data[container_no - 1]]
             CO2_Data[len(CO2_Data)]                   = [value for value in CO2_Data[len(CO2_Data)] if value != '' and value != None]
             CO2_Data[len(CO2_Data)]                   = [float(value) for value in CO2_Data[len(CO2_Data)]]
-            # collection_df                   = emptycells(collection_df)
-            # CO2_Data[container_no - 1]      = collection_df.CO2_Con
-            # CO2_Data[container_no - 1]      = [item.replace('U', '').replace('V', '').replace('*','') for item in CO2_Data[container_no - 1]]
-            # CO2_Data[container_no - 1]      = [value for value in CO2_Data[container_no - 1] if value != '' and value != None]
-            # CO2_Data[container_no - 1]      = [float(value) for value in CO2_Data[container_no - 1]]
-            # CO2_Dates[container_no - 1]     = collection_df.Date_Time
-            # print(container_no, len(CO2_Dates[container_no - 1]) - len(CO2_Data[container_no - 1]))
-            # diff = len(CO2_Dates[container_no - 1]) - len(CO2_Data[container_no - 1])
-            # if (diff > 0):
-            #     CO2_Dates[container_no - 1]     = deleteExtras(CO2_Dates[container_no - 1], diff)
-            # elif (diff < 0):
-            #     CO2_Data[container_no - 1]      = deleteExtras(CO2_Data[container_no - 1], diff)
-            # if (int(args.saveSheet) == 1):
-            #     collection_df.to_excel('/home/dan/Desktop/CO2_Dataframe.xlsx', index = False)
             
         case 'O2_Con':
             O2_Data.append(collection_df.Date_Time)
             O2_Data.append(collection_df.O2_Con)
             O2_Data[len(O2_Data)]                     = [float(value) for value in O2_Data[len(O2_Data)]]
 
-            # O2_Data[container_no - 1]       = collection_df.O2_Con
-            # print(O2_Data[container_no - 1])
-            # O2_Data[container_no - 1]       = [float(value) for value in O2_Data[container_no - 1]]
-            # O2_Dates[container_no - 1]      = collection_df.Date_Time
-            # diff = len(O2_Dates[container_no - 1]) - len(O2_Data[container_no - 1])
-            # deleteExtras(O2_Dates[container_no - 1], diff)
         case 'BME_Humidity':
             Humidity_Data.append(collection_df.Date_Time)
             Humidity_Data.append(collection_df.BME_Humidity)
-            Humidity_Data[len(Humidity_Data)] = [float(value) for value in Humidity_Data[len(Humidity_Data)]]
-            # Humidity_Data[container_no - 1] = collection_df.BME_Humidity
-            # Humidity_Data[container_no - 1] = [float(value) for value in Humidity_Data[container_no - 1]]
-            # BME_Dates[container_no - 1]     = collection_df.Date_Time
-            # diff = len(BME_Dates[container_no - 1]) - len(Humidity_Data[container_no - 1])
-            # deleteExtras(BME_Dates[container_no - 1], diff)
+            Humidity_Data[len(Humidity_Data)]         = [float(value) for value in Humidity_Data[len(Humidity_Data)]]
+
         case 'BME_Pressure':
             Pressure_Data.append(collection_df.Date_Time)
             Pressure_Data.append(collection_df.BME_Pressure)
-            Pressure_Data[len(Pressure_Data)] = [float(value) for value in Pressure_Data[len(Pressure_Data)]]
-            
-            # Pressure_Data[container_no - 1] = collection_df.BME_Pressure
-            # Pressure_Data[container_no - 1] = [float(value) for value in Pressure_Data[container_no - 1]]
-            # BME_Dates[container_no - 1]     = collection_df.Date_Time
-            # diff = len(BME_Dates[container_no - 1]) - len(Pressure_Data[container_no - 1])
-            # deleteExtras(BME_Dates[container_no - 1], diff)
+            Pressure_Data[len(Pressure_Data)]         = [float(value) for value in Pressure_Data[len(Pressure_Data)]]
+
         case 'BME_Temp':
             Temp_Data.append(collection_df.Date_Time)
             Temp_Data.append(collection_df.BME_Temp)
-            Temp_Data[len(Temp_Data)] = [float(value) for value in Temp_Data[len(Temp_Data)]]
-            # Temp_Data[container_no - 1]     = collection_df.BME_Temp
-            # Temp_Data[container_no - 1]     = [float(value) for value in Temp_Data[container_no - 1]]
-            # BME_Dates[container_no - 1]     = collection_df.Date_Time
-            # diff = len(BME_Dates[container_no - 1]) - len(Temp_Data[container_no - 1])
-            # deleteExtras(BME_Dates[container_no - 1], diff)
+            Temp_Data[len(Temp_Data)]                 = [float(value) for value in Temp_Data[len(Temp_Data)]]
+
         case 'Methane_Con':
             Methane_Data.append(collection_df.Date_Time)
             Methane_Data.append(collection_df.Methane_Con)
-            Methane_Data[len(Methane_Data)] = [float(value) for value in Methane_Data[len(Methane_Data)]]
-            # Methane_Data[container_no - 1]  = collection_df.Methane_Con
-            # Methane_Data[container_no - 1]  = [float(value) for value in Methane_Data[container_no - 1]]
-            # Methane_Dates[container_no - 1] = collection_df.Date_Time
-            # diff = len(Methane_Dates[container_no - 1]) - len(Methane_Data[container_no - 1])
-            # deleteExtras(Methane_Dates[container_no - 1], diff)
-            # for index, date in enumerate(Methane_Dates[container_no - 1]):
-            #     if '1970' in str(date):
-            #         print(f'the 1970 date is in index {index} of Methane_Data')
-            # # print(Methane_Data[container_no - 1])
-            # # input()
-            # print('Methane Dates:', Methane_Dates[container_no - 1])
-            # input()
+            Methane_Data[len(Methane_Data)]           = [float(value) for value in Methane_Data[len(Methane_Data)]]
+
         case _:
             print(f'{sensor} is not a valid sensor name. Check your sensorNames variable.')
+
+def statCalc(data):
+    std_1 = np.std(data(1))
+    std_2 = np.std(data(3))
+    
+    
 
 degree_sign = u'\N{DEGREE SIGN}'
 
@@ -222,11 +173,6 @@ if __name__ == '__main__':
         Temp_Data       =   manager.list([])
         Pressure_Data   =   manager.list([])
         Methane_Data    =   manager.list([])
-        # TVOC_Dates      =   manager.list([0, 0, 0, 0])
-        # CO2_Dates       =   manager.list([0, 0, 0, 0])
-        # O2_Dates        =   manager.list([0, 0, 0, 0])
-        # BME_Dates       =   manager.list([0, 0, 0, 0])
-        # Methane_Dates   =   manager.list([0, 0, 0, 0])
         
 
         
@@ -241,13 +187,12 @@ if __name__ == '__main__':
             process.join()
             print(f'Pull_data process {i} joined...')
 
-        # for process_index, process in enumerate(processes):
-            # process.start()
-            # print(f'Pull_data process {process_index} started...')
-        # 
-        # for process_index, process in enumerate(processes):
-            # process.join()
-            # print(f'Pull_data process {process_index} joined...')
+        for i in range(num_ranges):
+            process = mp.Process(target = statCalc, args = ())
+            process.start()
+            print(f'statCalc process {i} started...')
+            process.join()
+            print(f'statCalc process {i} joined...')
 
         directoryBase = f"/home/dan/Desktop/figures/{time.strftime('%m-%d-%Y')}"
 

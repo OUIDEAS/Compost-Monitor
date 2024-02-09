@@ -55,13 +55,10 @@ def upload_to_database(data):
 p = multiprocessing.Process(target = upload_to_database, args = (methane_DataDict,))
 
 read_command = (b'\x11\x01\x01\xED')
+
 while True:
     with open(logFileCH4, 'ab') as log:
-
-
         serialPort.write(read_command)
-        time.sleep(1)
-
 
         while serialPort.in_waiting:
             newb = serialPort.read(size=1)
@@ -130,6 +127,7 @@ while True:
                 lencount = 0
 
                 count += 1
+
 
 
 

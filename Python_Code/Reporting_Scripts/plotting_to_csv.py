@@ -8,7 +8,7 @@ import pathlib
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = client['CompostMonitor']
 collection = db['Overall']
-directoryBase = r"C:\Users\Dan's Loaner\Documents\Compost Monitor\Reporting_Scripts\{}\Test_csvs".format(time.strftime("%m-%d-%Y"))
+directoryBase = r"home/dan/SuperSecretTestFolder/Compost-Monitor/Python_Code/Reporting_Scripts/Test_CSVs".format(time.strftime("%m-%d-%Y"))
 pathlib.Path(directoryBase).mkdir(parents=True, exist_ok=True)
 def pull_data(container_no, sensor):
     data = collection.find({

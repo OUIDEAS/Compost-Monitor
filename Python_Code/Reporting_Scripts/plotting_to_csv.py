@@ -47,11 +47,11 @@ if __name__ == '__main__':
     mainStart = datetime.datetime.now()
     with mp.Manager() as manager:
         
-        sensorNames     =   ['TVOC_Con', 'CO2_Con', 'O2_Con', 'BME_Humidity', 'BME_Pressure', 'BME_Temp', 'Methane_Con']
+        sensorNames     =  'Methane_Con' #['TVOC_Con', 'CO2_Con', 'O2_Con', 'BME_Humidity', 'BME_Pressure', 'BME_Temp', 'Methane_Con']
 
         processes = []
 
-        for container_no in range(1, 5):
+        for container_no in range(1, 2):
             for sensor_index, sensor in enumerate(sensorNames):
                 process = mp.Process(target = pull_data, args = (container_no, sensor,))
                 processes.append(process)

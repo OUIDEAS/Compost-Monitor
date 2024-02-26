@@ -47,7 +47,7 @@ if __name__ == '__main__':
     mainStart = datetime.datetime.now()
     with mp.Manager() as manager:
         
-        sensorNames     =  'Methane_Con' #['TVOC_Con', 'CO2_Con', 'O2_Con', 'BME_Humidity', 'BME_Pressure', 'BME_Temp', 'Methane_Con']
+        sensorNames     =  ['Methane_Con'] #['TVOC_Con', 'CO2_Con', 'O2_Con', 'BME_Humidity', 'BME_Pressure', 'BME_Temp', 'Methane_Con']
 
         processes = []
 

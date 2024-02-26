@@ -5,7 +5,7 @@ import datetime
 import time
 import pathlib
 
-client = pymongo.MongoClient("localhost")
+client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = client['CompostMonitor']
 collection = db['Overall']
 directoryBase = r"C:\Users\Dan's Loaner\Documents\Compost Monitor\Reporting_Scripts\{}\Test_csvs".format(time.strftime("%m-%d-%Y"))

@@ -2,21 +2,16 @@ import serial
 import time
 import argparse
 
-
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--ports')
 parser.add_argument('-c', '--command')
 args = parser.parse_args()
-
-
-
 
 portsString = args.ports
 ports = portsString.split(',')
 print(ports)
 command = '{}\r'.format(args.command)
 command = command.encode('utf-8')
-
 
 serialPorts = []
 baud_rate = 9600
@@ -32,4 +27,3 @@ for port in ports:
        newb = serialPort.read(size=1)
        newb_array.append(newb)
    print(newb_array)
-

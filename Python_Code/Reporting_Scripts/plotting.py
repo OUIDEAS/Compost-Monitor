@@ -21,14 +21,14 @@ parser.add_argument('-c', '--containernumber', default = 'All')
 parser.add_argument('-t', '--saveSheet', default = 0)
 args = parser.parse_args()
 
-def emptycells(data):
-    emptycells = data.isnull().any(axis=1)
+def emptycells(data):                       #Determines whether empty cells exist within the data array passed to the 
+    emptycells = data.isnull().any(axis=1)  #function, returns the data array with empty cells removed.
     emptycells = [index for index, value in enumerate(emptycells) if value == True]
     print(emptycells, type(emptycells))
     data = data.drop(emptycells)
     return data
 
-def deleteExtras(data, count):
+def deleteExtras(data, count):              #Deletes rows from the array that are missing critical data and returns the array.
     print('data len before:', len(data))
     if (count != 0):
         for i in range(count):
@@ -36,8 +36,8 @@ def deleteExtras(data, count):
     print('data len after:', len(data))
     return data
 
-def pull_data(container_no, sensor):
-    if isinstance(args.number, int):
+def pull_data(container_no, sensor):        #Pulls data from the MongoDB collection. Takes cointainer number and sensor name 
+    if isinstance(args.number, int):        #as arguments, pulls matching documents
         limit = args.number
     else:
         limit = 10**9
@@ -126,8 +126,8 @@ degree_sign = u'\N{DEGREE SIGN}'
 figures = []
 
 
-def plots(data_sets, title, xaxistitle, yaxistitle, filename):
-    fig = plt.figure(figsize=(16, 9))
+def plots(data_sets, title, xaxistitle, yaxistitle, filename):  #Takes data sets, plot title, x- and y-axis titles, and a 
+    fig = plt.figure(figsize=(16, 9))                           #filepath. Output is a figure saved in the given path.
     ax = plt.gca()
 
     if isinstance(data_sets, list):

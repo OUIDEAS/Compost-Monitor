@@ -13,3 +13,7 @@ PyMongo-Enabled_Scripts/reading_json.py
 PyMongo-Enabled_Scripts/inputdatetime.py
 PyMongo-Enabled_Scripts/newscript.py
 Compost_Monitor_readme.docx
+Python_Code/Discontinued
+Python_Code/Reporting_Scripts/mongodb_indexes.py
+Python_Code/Reporting_Scripts/mongopull.py
+Python_Code/Sensor_Scripts/methane_mongoupload2.py

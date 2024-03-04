@@ -1,6 +1,7 @@
 import pymongo
 import pandas
-from pandasgui import show
+
+# from pandasgui import show
 
 
 client = pymongo.MongoClient("mongodb://localhost:27017/")

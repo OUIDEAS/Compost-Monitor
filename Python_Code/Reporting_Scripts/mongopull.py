@@ -12,6 +12,7 @@ indexes = collection.list_indexes()
 for index in indexes:
     print(index)
 
+print(collection.count_documents({}))
 
 docs= collection.find()
 print(docs)

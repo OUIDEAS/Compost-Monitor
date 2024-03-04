@@ -4,7 +4,7 @@ import pandas
 # from pandasgui import show
 
 
-client = pymongo.MongoClient("mongodb://localhost:27017/")
+client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
 db = client['CompostMonitor']
 collection = db['Overall']
 

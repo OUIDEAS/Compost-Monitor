@@ -7,7 +7,10 @@ import pandas
 client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
 db = client['CompostMonitor']
 collection = db['Overall']
-print(client.db.collection.list_indexes())
+indexes = collection.list_indexes()
+
+for index in indexes:
+    print(index)
 
 
 docs= collection.find()

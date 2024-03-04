@@ -20,25 +20,25 @@ def pull_data(container_no, sensor):
 
     match sensor:
         case 'TVOC_Con':
-            TVOC_df = collection_df[['Date_Time', 'TVOC_Con']]
+            TVOC_df = collection_df[['TVOC_Con']]
             TVOC_df.to_csv(f'/home/dan/SuperSecretTestFolder/Compost-Monitor/Python_Code/Reporting_Scripts/Test_CSVs/{time.strftime("%m-%d-%Y")}/TVOC_{container_no}.csv')
         case 'CO2_Con':
-            CO2_df = collection_df[['Date_Time', 'CO2_Con']]
+            CO2_df = collection_df[['CO2_Con']]
             CO2_df.to_csv(f'/home/dan/SuperSecretTestFolder/Compost-Monitor/Python_Code/Reporting_Scripts/Test_CSVs/CO2_{container_no}.csv')
         case 'O2_Con':
-            O2_df = collection_df[['Date_Time', 'O2_Con']]
+            O2_df = collection_df[['O2_Con']]
             O2_df.to_csv(f'/home/dan/SuperSecretTestFolder/Compost-Monitor/Python_Code/Reporting_Scripts/Test_CSVs/O2_{container_no}.csv')
         case 'BME_Humidity':
-            Hum_df = collection_df[['Date_Time', 'BME_Humidity']]
+            Hum_df = collection_df[['BME_Humidity']]
             Hum_df.to_csv(f'/home/dan/SuperSecretTestFolder/Compost-Monitor/Python_Code/Reporting_Scripts/Test_CSVs/Humidity_{container_no}.csv')
         case 'BME_Pressure':
-            Pressure_df = collection_df[['Date_Time', 'BME_Pressure']]
+            Pressure_df = collection_df[['BME_Pressure']]
             Pressure_df.to_csv(f'/home/dan/SuperSecretTestFolder/Compost-Monitor/Python_Code/Reporting_Scripts/Test_CSVs/Pressure_{container_no}.csv')
         case 'BME_Temp':
-            Temp_df = collection_df[['Date_Time', 'BME_Temp']]
+            Temp_df = collection_df[['BME_Temp']]
             Temp_df.to_csv(f'/home/dan/SuperSecretTestFolder/Compost-Monitor/Python_Code/Reporting_Scripts/Test_CSVs/Temp_{container_no}.csv')
         case 'Methane_Con':
-            Methane_df = collection_df[['Date_Time', 'Methane_Con']]
+            Methane_df = collection_df[['Methane_Con']]
             Methane_df.to_csv(f'/home/dan/SuperSecretTestFolder/Compost-Monitor/Python_Code/Reporting_Scripts/Test_CSVs/Methane_{container_no}.csv')            
         case _:
             print(f'{sensor} is not a valid sensor name. Check your sensorNames variable.')

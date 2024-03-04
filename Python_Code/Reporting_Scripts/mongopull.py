@@ -9,6 +9,7 @@ db = client['CompostMonitor']
 collection = db['Overall']
 
 docs= collection.find().limit(10)
+print(docs)
 # field_names = set()
 # for document in docs:
 #     field_names.update(document.keys())

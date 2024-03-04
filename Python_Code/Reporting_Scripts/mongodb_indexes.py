@@ -1,6 +1,6 @@
 import pymongo
 
-client = pymongo.MongoClient("mongodb://100.114.38.109/")
+client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = client['CompostMonitor']
 collection = db['Overall']
 

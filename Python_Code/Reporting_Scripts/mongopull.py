@@ -3,7 +3,7 @@ import pandas
 from pandasgui import show
 
 
-client = pymongo.MongoClient("mongodb://100.110.90.28/")
+client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = client['CompostMonitor']
 collection = db['Overall']
 

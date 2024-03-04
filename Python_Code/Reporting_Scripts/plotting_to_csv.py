@@ -8,7 +8,7 @@ import pathlib
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = client['CompostMonitor']
 collection = db['Overall']
-directoryBase = r"home/dan/SuperSecretTestFolder/Compost-Monitor/Python_Code/Reporting_Scripts/Test_CSVs".format(time.strftime("%m-%d-%Y"))
+directoryBase = r"home/compostmonitor/SuperSecretTestFolder/Compost-Monitor/Python_Code/Reporting_Scripts/Test_CSVs".format(time.strftime("%m-%d-%Y"))
 pathlib.Path(directoryBase).mkdir(parents=True, exist_ok=True)
 def pull_data(container_no, sensor):
     data = collection.find({
@@ -16,6 +16,7 @@ def pull_data(container_no, sensor):
                             sensor: {'$exists': 'True'}
                             }).sort("_id", pymongo.ASCENDING)
     collection_df = pd.DataFrame(data)
+    print(collection_df.columns)
 
     match sensor:
         case 'TVOC_Con':

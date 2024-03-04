@@ -52,9 +52,11 @@ if __name__ == '__main__':
 
         processes = []
 
-        for index in sensorNames:
-            for container_no in range(1, 5):
+        for container_no in range(1, 5):
+            for index in sensorNames:
+                print(container_no, index)
                 process = mp.Process(target = pull_data, args = (container_no, index,))
+                print(process)
                 processes.append(process)
         
         for process_index, process in enumerate(processes):

@@ -1,13 +1,21 @@
 import pymongo
 import pandas
-from pandasgui import show
+
+# from pandasgui import show
 
 
-client = pymongo.MongoClient("mongodb://100.110.90.28/")
+client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
 db = client['CompostMonitor']
 collection = db['Overall']
+indexes = collection.list_indexes()
 
-docs= collection.find().limit(10)
+for index in indexes:
+    print(index)
+
+print(collection.count_documents({}))
+
+docs= collection.find()
+print(docs)
 # field_names = set()
 # for document in docs:
 #     field_names.update(document.keys())

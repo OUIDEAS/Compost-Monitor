@@ -4,7 +4,7 @@ import pandas
 # from pandasgui import show
 
 
-client = pymongo.MongoClient("mongodb://localhost:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.5")
+client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = client['CompostMonitor']
 collection = db['Overall']
 

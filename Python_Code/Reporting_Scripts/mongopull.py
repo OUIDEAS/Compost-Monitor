@@ -8,7 +8,7 @@ client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = client['CompostMonitor']
 collection = db['Overall']
 
-docs= collection.find().limit(10)
+docs= collection.find()
 print(docs)
 # field_names = set()
 # for document in docs:

@@ -6,7 +6,7 @@
 
 #define printtab(x) Serial.print(String(x)+"\t");
 #define printline Serial.print("\n");
-#define delaytime 1000
+#define delaytime 90000
 #define printtab(x) Serial.print(String(x) + "\t");
 
 
@@ -17,8 +17,13 @@ void setup() {                                        //set up the hardware
   Serial.begin(9600);                                 //set baud rate for the hardware serial port_0 to 9600
   Wire.begin();
   if (SGP.begin() == false) {
-    Serial.println("No SGP40 Detected. Check connections.");
-    while (!SGP.begin()){}
+    Serial.println("No SGP40 Detected. Check connections. Checking for BME280...");
+    while (!SGP.begin()){
+      if(BME.begin() == false{
+        Serial.println("No BME280 Detected. Check connections.");
+        while (!BME.begin()){}
+        }
+      }
   }
   if (BME.begin() == false){
     Serial.println("No BME280 Detected. Check connections.");
@@ -41,6 +46,6 @@ void loop() {                                         //here we go...
   Serial.print(BME.readTempC());
   Serial.print(" ");
 
-  delay(delaytime);                                       //act as if we have the third sensor installed - 3 sec loop
+  delay(delaytime);                                   //act as if we have the third sensor installed - 3 sec loop
   Serial.print("\n");
 }

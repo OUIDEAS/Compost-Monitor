@@ -18,3 +18,4 @@ Python_Code/Reporting_Scripts/mongodb_indexes.py
 Python_Code/Reporting_Scripts/mongopull.py
 Python_Code/Sensor_Scripts/methane_mongoupload2.py
 Python_Code/Reporting_Scripts/enumerate,_range.py
+Python_Code/Sensor_Scripts/break_experiment.py

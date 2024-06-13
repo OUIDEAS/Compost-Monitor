@@ -8,6 +8,9 @@ from pymongo import MongoClient
 from pymongo.errors import PyMongoError
 import datetime
 import csv
+import smtplib
+import ssl
+from ..System_Monitoring_Scripts.providers import PROVIDERS
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comport')
@@ -67,7 +70,29 @@ def upload_to_database(data):
         # collection.insert_one(data)
         print('Container {} methane saved to MongoDB!'.format(args.containernumber))
     except PyMongoError as e:
-        print('Error saving container {} methane to MongoDB \n'.format(args.containernumber), e)
+        print('Error saving container {} methane to MongoDB \nError below:\n'.format(args.containernumber), e)
+
+def send_sms_via_email(
+        number: str,
+        message: str,
+        provider: str, 
+        sender_credentials: tuple,
+        subject: str = "Compost Monitor Reports",
+        smtp_server = "smtp.gmail.com",
+        smtp_port: int = 465,
+):
+    sender_email, email_password = sender_credentials
+    receiver_email = f"{number}@{PROVIDERS.get(provider).get('sms')}"
+
+    email_message = f"Subject:{subject}\nTo:{receiver_email}\n{message}"
+
+    with smtplib.SMTP_SSL(smtp_server, smtp_port, context=ssl.create_default_context()) as email:
+        email.login(sender_email, email_password)
+        email.sendmail(sender_email, receiver_email, email_message)
+
+number = "4407498307"
+provider = "T-Mobile"
+sender_credentials = ("ideascompostmonitor@gmail.com", "uptrrccfbehyrxso")
 
 p = multiprocessing.Process(target = upload_to_database, args = (methane_DataDict,))
 
@@ -98,7 +123,7 @@ try:
                     log.write(newb)
 
                     ''' second byte (status is first byte) shows the size of the packet - use that to set the length 
-                                                                                                    of the word'''
+                                                                   providers                                 of the word'''
                     if (packetstart and packetsize == -1):
                         packetsize = int.from_bytes(newb, 'little')
 
@@ -115,6 +140,16 @@ try:
                             lencount = 0
                         else:
                             packetstart = True
+
+                    if (lencount == 6 and newb != b'\x00'):
+                        newb_bin = int(newb, 16)
+                        bStr = ''
+                        while newb_bin > 0:
+                            bStr = str(newb_bin % 2) + bStr
+                            newb_bin = newb_bin >> 1   
+                        errorcode = bStr
+                        message = f"Methane sensor in container {args.containernumber} has encountered an issue. Error code {errorcode}"
+                        send_sms_via_email(number, message, provider, sender_credentials)
 
                     ''' if the packetcount and the size of the packet match, the word is finished - now time to decode
                                                                                         and prepare to start over'''
@@ -171,6 +206,7 @@ except IOError as e:
     current_date = datetime.datetime.now()
     errorMessage = 'IOError at {}. CH4 sensor at {} has disconnected.'.format(current_date, args.comport)
     print(errorMessage)
+    send_sms_via_email(number, errorMessage, provider, sender_credentials)
     with open(logFileCH4, 'ab') as log:
         date_binary = current_date.strftime("%m-%d-%Y %H:%M:%S").encode('utf-8')
         log.write(struct.pack(f"{len(date_binary)}s", date_binary))

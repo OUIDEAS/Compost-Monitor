@@ -18,7 +18,7 @@ args = parser.parse_args()
 
 CO2Port = ''.join(args.comport)
 baud_rate = 9600
-CO2Serial = serial.Serial(CO2Port, baud_rate, timeout=1)
+CO2Serial = serial.Serial(CO2Port, baud_rate, timeout=90)
 directoryBase = "{}/{}/Bucket {}/CO2".format(args.filename, time.strftime("%m-%d-%Y"), args.containernumber)
 pathlib.Path(directoryBase).mkdir(parents=True, exist_ok=True)
 logFileCO2  = '{}/CO2_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))

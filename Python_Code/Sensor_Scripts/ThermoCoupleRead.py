@@ -49,8 +49,8 @@ class TemperatureReader:
     
 def MongoUpload(data):
     client = MongoClient("mongodb://100.114.38.109:27017/")
-    db = client['Testing_DB']
-    collection = db['Thermocouple_Test']
+    db = client['CompostMonitor']
+    collection = db['Jun28Experiment']
     try:
         collection.insert_one(data)
         print('Thermocouple temp saved to MongoDB @ {}.'.format(time.strftime("%H:%M:%S")))

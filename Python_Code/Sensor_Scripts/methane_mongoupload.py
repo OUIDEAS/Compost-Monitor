@@ -10,7 +10,7 @@ import datetime
 import csv
 import smtplib
 import ssl
-from ..System_Monitoring_Scripts.providers import PROVIDERS
+from providers import PROVIDERS
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comport')

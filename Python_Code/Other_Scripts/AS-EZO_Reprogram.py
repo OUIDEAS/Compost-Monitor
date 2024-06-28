@@ -35,14 +35,14 @@ def getDevicesByID(pid, vid):
                 pass
     return devices
 
-def sendCommands(ports):
+def sendCommands(ports, commandInput):
     for port in ports:
         newb_array = []
         serialPort = serial.Serial(port, baud_rate, timeout=1)
         serialPort.reset_input_buffer()
         serialPort.reset_output_buffer()
-        print('Now sending command "', command,'" to device at ', port,'.')
-        serialPort.write(command)
+        print('Now sending command "', commandInput,'" to device at ', port,'.')
+        serialPort.write(commandInput)
         time.sleep(1)
         while serialPort.in_waiting:
             newb = serialPort.read(size=1)
@@ -56,9 +56,9 @@ class pickOne(Exception):
 if __name__ == '__main__':
     if (args.productID is not None and args.vendorID is not None):
         matchingDevices = getDevicesByID(args.productID, args.vendorID)
-        sendCommands(matchingDevices)
+        sendCommands(matchingDevices, command)
     elif args.ports is not None:
-        sendCommands(ports)
+        sendCommands(ports, command)
     else:
         print("\n")
         print("You need to either provide a range of ports or provide BOTH PID and VID for this script.\n")

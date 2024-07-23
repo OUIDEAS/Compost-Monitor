@@ -10,9 +10,9 @@ import argparse
 import numpy as np
 import datetime
 
-client = pymongo.MongoClient("mongodb://100.110.90.28/")
+client = pymongo.MongoClient("mongodb://100.114.38.109/")
 db = client['CompostMonitor']
-collection = db['Overall']
+collection = db['Jun28Experiment']
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--sensor')
@@ -48,6 +48,7 @@ def pull_data(container_no, sensor):        #Pulls data from the MongoDB collect
                                     {'Date_Time': {'$exists': 'True'}},
                                     {'Date_Time': {'$gt': datetime.datetime(2022, 1, 1, 0, 0, 1)}}]
                                                                           }).sort("Date_Time", pymongo.DESCENDING).limit(limit)
+    print(data)
     collection_df = pandas.DataFrame(data)
 
     match sensor:
@@ -81,11 +82,18 @@ def pull_data(container_no, sensor):        #Pulls data from the MongoDB collect
                 collection_df.to_excel('/home/dan/Desktop/CO2_Dataframe.xlsx', index = False)
             
         case 'O2_Con':
+            invalidPoints = [[],[],[],[]]
             O2_Data[container_no - 1]       = collection_df.O2_Con
             print(O2_Data[container_no - 1])
+            for data_index, data in enumerate(O2_Data[container_no - 1]):
+                if "UV" in data:
+                    invalidPoints[container_no-1].data_index
+            O2_Data[container_no - 1].pop(data_index)
             O2_Data[container_no - 1]       = [float(value) for value in O2_Data[container_no - 1]]
             O2_Dates[container_no - 1]      = collection_df.Date_Time
             diff = len(O2_Dates[container_no - 1]) - len(O2_Data[container_no - 1])
+
+            print(container_no)
             deleteExtras(O2_Dates[container_no - 1], diff)
         case 'BME_Humidity':
             Humidity_Data[container_no - 1] = collection_df.BME_Humidity
@@ -135,7 +143,7 @@ def plots(data_sets, title, xaxistitle, yaxistitle, filename):  #Takes data sets
             x = data_set[0]
             y = data_set[1]
             legend_entry = data_set[2]
-            # print(x, y)
+            
             x = [value for value in x if value != None and value != '']
             y = [value for value in y if value != None and value != '']
             
@@ -274,4 +282,4 @@ if __name__ == '__main__':
             # plots(data_sets[2], "Methane Concentration versus Time - Container 3", "Time", "Methane Concentration (% Volume)", f"{directoryBase}/Methane_1.png")
             # plots(data_sets[3], "Methane Concentration versus Time - Container 4", "Time", "Methane Concentration (% Volume)", f"{directoryBase}/Methane_1.png")
             plots(data_sets, "Methane Concentration versus Time", 'Time', 'Methane Concentration (% Volume)', f"{directoryBase}/Methane_{args.number}.png")
-        # plt.show()
+        plt.show()

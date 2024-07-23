@@ -8,8 +8,8 @@ import numpy as np
 startupTime = datetime.datetime.now()
 
 client = pymongo.MongoClient("mongodb://100.110.90.28/")
-db = client['CompostMonitor']
-collection = db['Overall']
+db = client['Compost-Monitor']
+collection = db['Jun28Experiment']
 
 def pull_data(container_no, sensor):
     data = collection.find({

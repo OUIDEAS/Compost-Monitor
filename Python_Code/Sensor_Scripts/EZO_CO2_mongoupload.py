@@ -49,53 +49,38 @@ def upload_to_database(data):
 
 p = multiprocessing.Process(target=upload_to_database, args=(CO2_DataDict,))
 
-loopTimer = 90
-
-readCommand = 'R\r'
-readCommand.encode('utf-8')
-
-
 while 1:
-    
-    CO2Serial.reset_input_buffer()
-    CO2Serial.reset_output_buffer()
-    CO2Serial.write('R\r'.encode('utf-8'))
-    loopStartTime = time.time()                 # start counting right after the command has been sent
-    time.sleep(1)
-    while CO2Serial.in_waiting:
-        CO2_inbyte = CO2Serial.read(size=1)
-        with open(logFileCO2, 'ab') as l:
-            l.write(CO2_inbyte)
-        # print(CO2_inbyte)
-        bytearray.append(CO2_inbyte)
-        if CO2_inbyte == b'\r':
-            #split it up
-            bytearray.pop()
-            DataList.append(
-                ''.join(str(bytearray)).replace(" ", "").replace('b', '').replace("'", '').replace(",", '')
-                .replace('[','').replace(']', ''))
-            overallList.append(datetime.datetime.now())
-            overallList.append(str(''.join(DataList[count])))
-            overallList.pop(0)
-            overallList.pop(0)
-            # print(overallList)
-            CO2_DataDict = {'Date_Time': overallList[0], 'CO2_Con': overallList[1], 'Sensor': 'EZO-CO2',
-                            'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
-            print('CO2 in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
-            if __name__ == '__main__':
-                if startup:
-                    p.start()
-                    startup= False
-                    print('startup == false')
-                else:
-                    p.join()
-                    p.close()
-                    p = multiprocessing.Process(target = upload_to_database, args = (CO2_DataDict,))
-                    p.start()
-            bytearray = []
-            count += 1
-    while ((time.time() - loopStartTime) < loopTimer):
-        time.sleep(0.1)
+    CO2_inbyte = CO2Serial.read(size=1)
+    with open(logFileCO2, 'ab') as l:
+        l.write(CO2_inbyte)
+    # print(CO2_inbyte)
+    bytearray.append(CO2_inbyte)
+    if CO2_inbyte == b'\r':
+        #split it up
+        bytearray.pop()
+        DataList.append(
+            ''.join(str(bytearray)).replace(" ", "").replace('b', '').replace("'", '').replace(",", '')
+            .replace('[','').replace(']', ''))
+        overallList.append(datetime.datetime.now())
+        overallList.append(str(''.join(DataList[count])))
+        overallList.pop(0)
+        overallList.pop(0)
+        # print(overallList)
+        CO2_DataDict = {'Date_Time': overallList[0], 'CO2_Con': overallList[1], 'Sensor': 'EZO-CO2',
+                        'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
+        print('CO2 in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
+        if __name__ == '__main__':
+            if startup:
+                p.start()
+                startup= False
+                print('startup == false')
+            else:
+                p.join()
+                p.close()
+                p = multiprocessing.Process(target = upload_to_database, args = (CO2_DataDict,))
+                p.start()
+        bytearray = []
+        count += 1
     if time.time() - startTime >= 3600:
         count = 0
         DataList = []

@@ -46,8 +46,11 @@ def sendCommands(ports, commandInput):
         time.sleep(1)
         while serialPort.in_waiting:
             newb = serialPort.read(size=1)
-            newb_array.append(newb)
+            newb_array.append(newb.decode())
+        # newb_array = newb_array.decode()
         print(newb_array)
+        newb_string =''.join(str(newb_array)).replace(" ", "").replace('b', '').replace("'", '').replace(",", '').replace('[','').replace(']', '').replace('\r','')
+        print(newb_string)
 
 class pickOne(Exception):
     pass

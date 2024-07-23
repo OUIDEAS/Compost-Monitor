@@ -19,3 +19,4 @@ Python_Code/Reporting_Scripts/mongopull.py
 Python_Code/Sensor_Scripts/methane_mongoupload2.py
 Python_Code/Reporting_Scripts/enumerate,_range.py
 Python_Code/Sensor_Scripts/break_experiment.py
+Python_Code/Other_Scripts/Sensor_Reprogram.py

@@ -7,9 +7,9 @@ import numpy as np
 
 startupTime = datetime.datetime.now()
 
-client = pymongo.MongoClient("mongodb://100.110.90.28/")
+client = pymongo.MongoClient("mongodb://100.114.38.109/")
 db = client['CompostMonitor']
-collection = db['Overall']
+collection = db['Jun28Experiment']
 
 def pull_data(container_no, sensor):
     data = collection.find({
@@ -21,7 +21,7 @@ def pull_data(container_no, sensor):
     lastdate = coll_datetime.to_pydatetime()
     timedelta = datetime.datetime.now() - lastdate
 
-    if (timedelta.total_seconds() < 5.0):
+    if (timedelta.total_seconds() < 3600.0):
         match sensor:
             case 'TVOC_Con':
                 TVOC_markers[container_no - 1]      =   True

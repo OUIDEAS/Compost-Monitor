@@ -48,36 +48,49 @@ def upload_to_database(data):
 
 p = multiprocessing.Process(target = upload_to_database, args = (O2_DataDict,))
 
+loopTimer = 90
+
+readCommand = 'R\r'         # EZO sensors reply with 1 reading after 
+readCommand.encode('utf-8') # command has to be encoded to bytes for the sensor to understand it
+
 while 1:
+    serialPort.reset_input_buffer()         # clear incoming data to make sure reading is only current data
+    serialPort.reset_output_buffer()        # clear outgoing data to make sure only the intended command is sent
+    serialPort.write(readCommand)
+    loopStartTime = time.time()
+    time.sleep(1)
     O2_inbyte = serialPort.read(size=1)
-    with open(logFileO2, 'ab') as l:
-        l.write(O2_inbyte)
-    bytearray.append(O2_inbyte)
-    if O2_inbyte == b'\r':
-        bytearray.pop()
-        DataList.append(
-            ''.join(str(bytearray)).replace(" ", "").replace('b', '').replace("'", '').replace(",", '').replace('[',
-                                                                                                                '').replace(
-                ']', ''))
-        overallList.append(datetime.datetime.now())
-        overallList.append(str(''.join(DataList[count])))
-        overallList.pop(0)
-        overallList.pop(0)
-        # print(overallList)
-        O2_DataDict = {'Date_Time': overallList[0], 'O2_Con': overallList[1], 'Sensor': 'EZO-O2',
-                       'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
-        print('O2 in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
-        if startup:
-            p.start()
-            startup=False
-            print('startup == false')
-        else:
-            p.join()
-            p.close()
-            p = multiprocessing.Process(target = upload_to_database, args = (O2_DataDict,))
-            p.start()
-        bytearray = []
-        count += 1
+    while serialPort.in_waiting:
+        with open(logFileO2, 'ab') as l:
+            l.write(O2_inbyte)
+        bytearray.append(O2_inbyte)
+        if O2_inbyte == b'\r':
+            bytearray.pop()
+            DataList.append(
+                ''.join(str(bytearray)).replace(" ", "").replace('b', '').replace("'", '').replace(",", '').replace('[',
+                                                                                                                    '').replace(
+                    ']', ''))
+            overallList.append(datetime.datetime.now())
+            overallList.append(str(''.join(DataList[count])))
+            overallList.pop(0)
+            overallList.pop(0)
+            # print(overallList)
+            O2_DataDict = {'Date_Time': overallList[0], 'O2_Con': overallList[1], 'Sensor': 'EZO-O2',
+                        'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
+            print('O2 in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
+            if startup:
+                p.start()
+                startup=False
+                print('startup == false')
+            else:
+                p.join()
+                p.close()
+                p = multiprocessing.Process(target = upload_to_database, args = (O2_DataDict,))
+                p.start()
+            bytearray = []
+            count += 1
+    while ((time.time() - loopStartTime) < loopTimer):
+        time.sleep(0.1)
     if time.time() - startTime >= 3600:
         count = 0
         DataList = []

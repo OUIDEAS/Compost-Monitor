@@ -1,5 +1,6 @@
 import json
 from pymongo import MongoClient
+from datetime import datetime
 
 def query_humidity():
     # Connect to MongoDB
@@ -27,7 +28,7 @@ def query_humidity():
             if timestamp is not None and humidity_value is not None:
                 # Ensure humidity_value is converted to float
                 humidity_data[f'Container_{container_id}'].append({
-                    'timestamp': timestamp,
+                    'timestamp': timestamp.isoformat(),  # Convert datetime to ISO format string
                     'humidity': float(humidity_value)  # Convert to float
                 })
             else:

@@ -18,6 +18,7 @@ def query_humidity():
     # Query for all documents in the collection for containers 1, 2, 3, and 4
     for container_id in ['1', '2', '3', '4']:
         results = collection.find({'Container_No': container_id}, {'Date_Time': 1, 'BME_Humidity': 1})
+        print(results)
         for data in results:
             print(data)
             humidity_data[f'Container_{container_id}'].append({

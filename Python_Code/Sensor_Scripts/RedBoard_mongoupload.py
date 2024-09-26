@@ -55,7 +55,8 @@ while 1:
         l.write(RB_inbyte)
     byteArray.append(RB_inbyte)
     if RB_inbyte == b'\n':
-        byteArray.pop()  # Remove the newline character
+        # Remove the newline character from the end of the array
+        byteArray.pop()
 
         # Split the data array into a list
         RB_DataSplit = ''.join(str(byteArray)).replace(" ", "").replace('b', '').replace("'", '').replace(",", ''). \
@@ -68,34 +69,13 @@ while 1:
         for i in range(len(RB_DataSplit)):
             RB_DataList.append(RB_DataSplit[i])
 
-        # Extract humidity value (index might change based on your data)
-        humidity_value = float(RB_DataList[2])  # Assuming index 2 is humidity
-        
-        # Store the humidity value for each container
-        container_no = args.containernumber
-        humidity_values[container_no] = humidity_value
-
-        # Calculate relative humidity if container 3's data is available
-        if '3' in humidity_values:
-            relative_humidity = humidity_value - humidity_values['3']
-        else:
-            relative_humidity = None  # Or set a default value
-
         # Make a dictionary of the data for PyMongo
-        RB_DataDict = {
-            'Date_Time': RB_DataList[0],
-            'TVOC_Con': RB_DataList[1],
-            'BME_Humidity': RB_DataList[2],
-            'Relative_Humidity': relative_humidity,  # Add relative humidity to the dictionary
-            'BME_Pressure': RB_DataList[3],
-            'BME_Temp': RB_DataList[4],
-            'Sensor': 'RedBoard',
-            'Container_No': container_no,
-            'Experiment_No': args.experimentnumber
-        }
-        print('RedBoard in container {} good at time {}'.format(container_no, time.strftime("%H:%M:%S")))
+        RB_DataDict = {'Date_Time': RB_DataList[0], 'TVOC_Con': RB_DataList[1], 'BME_Humidity': RB_DataList[2],
+                       'BME_Pressure': RB_DataList[3], 'BME_Temp': RB_DataList[4], 'Sensor': 'RedBoard',
+                       'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
+        print('RedBoard in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
 
-        # Reset the data list
+        ## Reset the data list
         RB_DataList = []
 
         if __name__ == '__main__':
@@ -103,10 +83,12 @@ while 1:
                 p.start()
                 startup = False
                 print('Startup == False')
+
             else:
+                # Close the process instance and start a new one!
                 p.join()
                 p.close()
-                p = multiprocessing.Process(target=upload_to_database, args=(RB_DataDict,))
+                p = multiprocessing.Process(target= upload_to_database, args = (RB_DataDict,))
                 p.start()
 
         byteArray = []

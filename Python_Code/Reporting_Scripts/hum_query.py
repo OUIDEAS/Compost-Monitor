@@ -18,13 +18,20 @@ def query_humidity():
     # Query for all documents in the collection for containers 1, 2, 3, and 4
     for container_id in ['1', '2', '3', '4']:
         results = collection.find({'Container_No': container_id}, {'Date_Time': 1, 'BME_Humidity': 1})
-        print(results)
+        print(f"Results for Container {container_id}:")
         for data in results:
-            print(data)
-            humidity_data[f'Container_{container_id}'].append({
-                'timestamp': data['Date_Time'],
-                'humidity': float(data['BME_Humidity'])
-            })
+            print(data)  # Print the document for debugging
+            # Use get() to avoid KeyError
+            timestamp = data.get('Date_Time')
+            humidity_value = data.get('BME_Humidity')
+
+            if timestamp is not None and humidity_value is not None:
+                humidity_data[f'Container_{container_id}'].append({
+                    'timestamp': timestamp,
+                    'humidity': float(humidity_value)  # Convert to float safely
+                })
+            else:
+                print(f"Missing data for Container {container_id} - Timestamp: {timestamp}, Humidity: {humidity_value}")
 
     # Calculate relative humidity for containers 1, 2, and 4 based on container 3
     relative_humidity = {

@@ -41,33 +41,20 @@ def query_humidity():
         'Container_4_Relative_Humidity': []
     }
 
-    # Create a dictionary to easily access container 3's humidity values by timestamp
+    # Create a dictionary to map container 3's humidity values to their timestamps
     container_3_humidity_dict = {entry['timestamp']: entry['humidity'] for entry in humidity_data['Container_3']}
 
-    # Calculate relative humidity for each entry in containers 1, 2, and 4
-    for entry in humidity_data['Container_1']:
-        timestamp = entry['timestamp']
-        if timestamp in container_3_humidity_dict:
-            relative_humidity['Container_1_Relative_Humidity'].append({
-                'timestamp': timestamp,
-                'relative_humidity': entry['humidity'] - container_3_humidity_dict[timestamp]
-            })
-
-    for entry in humidity_data['Container_2']:
-        timestamp = entry['timestamp']
-        if timestamp in container_3_humidity_dict:
-            relative_humidity['Container_2_Relative_Humidity'].append({
-                'timestamp': timestamp,
-                'relative_humidity': entry['humidity'] - container_3_humidity_dict[timestamp]
-            })
-
-    for entry in humidity_data['Container_4']:
-        timestamp = entry['timestamp']
-        if timestamp in container_3_humidity_dict:
-            relative_humidity['Container_4_Relative_Humidity'].append({
-                'timestamp': timestamp,
-                'relative_humidity': entry['humidity'] - container_3_humidity_dict[timestamp]
-            })
+    # For each container's humidity data, calculate the relative humidity
+    for container in ['Container_1', 'Container_2', 'Container_4']:
+        for entry in humidity_data[container]:
+            timestamp = entry['timestamp']
+            if timestamp in container_3_humidity_dict:
+                relative_humidity[f'{container}_Relative_Humidity'].append({
+                    'timestamp': timestamp,
+                    'relative_humidity': entry['humidity'] - container_3_humidity_dict[timestamp]
+                })
+            else:
+                print(f"No matching timestamp in Container 3 for {container} - Timestamp: {timestamp}")
 
     # Export the results to a JSON file
     output_data = {

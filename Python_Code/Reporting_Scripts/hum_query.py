@@ -5,7 +5,7 @@ def query_humidity():
     # Connect to MongoDB
     client = MongoClient("mongodb://localhost:27017/")
     db = client['CompostMonitor']
-    collection = db['Jun28Experiment']  # Replace with your actual collection name
+    collection = db['Overall']  # Replace with your actual collection name
 
     # Prepare a dictionary to store humidity data with timestamps
     humidity_data = {

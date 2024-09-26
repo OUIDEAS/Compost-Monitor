@@ -19,6 +19,7 @@ def query_humidity():
     for container_id in ['1', '2', '3', '4']:
         results = collection.find({'Container_No': container_id}, {'Date_Time': 1, 'BME_Humidity': 1})
         for data in results:
+            print(data)
             humidity_data[f'Container_{container_id}'].append({
                 'timestamp': data['Date_Time'],
                 'humidity': float(data['BME_Humidity'])

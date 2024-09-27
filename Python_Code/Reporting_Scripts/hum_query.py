@@ -68,14 +68,14 @@ def query_humidity():
         print(humidity_data.keys())
         for entry in humidity_data[container]:
             timestamp = entry['Date_Time']
-            # print(timestamp)
+            print('BME_Humidity')
 
-            if timestamp in humidity_data['Container_3']:
-                relative_humidity[f'{container}_Relative_Humidity'].append({
-                    'Date_Time': timestamp,
-                    'relative_humidity': entry[timestamp].get('BME_Humidity') - humidity_data['Container_3'][timestamp].get('BME_Humidity')
-                })
-                print(relative_humidity)
+            # if timestamp in humidity_data['Container_3']:
+            relative_humidity[f'{container}_Relative_Humidity'].append({
+                'Date_Time': timestamp,
+                'relative_humidity': entry[timestamp].get('BME_Humidity') - humidity_data['Container_3'][timestamp].get('BME_Humidity')
+            })
+            print(relative_humidity)
             # else:
             #     print(f"No matching timestamp in Container 3 for {container} - Timestamp: {timestamp}")
 

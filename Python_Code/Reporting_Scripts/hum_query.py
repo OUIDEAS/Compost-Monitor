@@ -65,7 +65,7 @@ def query_humidity():
         print(humidity_data.keys())
         for entry in humidity_data[container]:
             timestamp = entry['Date_Time']
-            print(timestamp)
+            # print(timestamp)
 
             if timestamp in humidity_data['Container_3']:
                 relative_humidity[f'{container}_Relative_Humidity'].append({
@@ -73,8 +73,8 @@ def query_humidity():
                     'relative_humidity': entry[timestamp].get('BME_Humidity') - humidity_data['Container_3'][timestamp].get('BME_Humidity')
                 })
                 print(relative_humidity)
-            else:
-                print(f"No matching timestamp in Container 3 for {container} - Timestamp: {timestamp}")
+            # else:
+            #     print(f"No matching timestamp in Container 3 for {container} - Timestamp: {timestamp}")
 
     # Export the results to a JSON file
     output_data = {

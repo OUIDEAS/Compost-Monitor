@@ -70,7 +70,11 @@ def query_humidity():
     for container in ['Container_1', 'Container_2', 'Container_3', 'Container_4']:
         print(container, len(humidity_data['Container_3']))
         # print(humidity_data.keys())
-        for i in range(0, len(humidity_data['Container_3']), 10):
+        if len(humidity_data[container]) < len(humidity_data['Container_3']):
+            cont = container
+        else:
+            cont = 'Container_3'
+        for i in range(0, len(humidity_data[cont]), 10):
             # print(int(i))
             # for entry in humidity_data[container]:
             # print(entry, i)

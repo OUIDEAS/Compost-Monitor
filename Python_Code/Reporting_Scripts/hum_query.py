@@ -70,19 +70,19 @@ def query_humidity():
         # print(humidity_data.keys())
         for i in np.linspace(0, 59010, 5901):
             # print(int(i))
-            for entry in humidity_data[container]:
-                print(entry, i)
-                timestamp = entry['Date_Time']
-                # print(entry['BME_Humidity'])
-                # print(humidity_data['Container_3'][i]['BME_Humidity'])
-                # print(container, i)
-                # if timestamp in humidity_data['Container_3']:
-                relative_humidity[f'{container}_Relative_Humidity'].append({
-                    'Date_Time': timestamp,
-                    'relative_humidity': float(entry['BME_Humidity']) - float(humidity_data['Container_3'][int(i)]['BME_Humidity']),
-                    'Container_No': container
-                })
-                print(relative_humidity)
+            # for entry in humidity_data[container]:
+            # print(entry, i)
+            timestamp = humidity_data[container][int(i)]['Date_Time']
+            # print(entry['BME_Humidity'])
+            # print(humidity_data['Container_3'][i]['BME_Humidity'])
+            # print(container, i)
+            # if timestamp in humidity_data['Container_3']:
+            relative_humidity[f'{container}_Relative_Humidity'].append({
+                'Date_Time': timestamp,
+                'relative_humidity': float(humidity_data[container][int(i)]['BME_Humidity']) - float(humidity_data['Container_3'][int(i)]['BME_Humidity']),
+                'Container_No': container
+            })
+            print(relative_humidity, i)
                 # print('OKAY')
     
                 # else:

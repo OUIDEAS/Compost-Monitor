@@ -59,7 +59,7 @@ def query_humidity():
 
     # Create a dictionary to map container 3's humidity values to their timestamps
     
-
+    print(humidity_data['Container_1']['BME_Humidity'][1])
     # For each container's humidity data, calculate the relative humidity
     for container in ['Container_1', 'Container_2', 'Container_4']:
         print(humidity_data.keys())

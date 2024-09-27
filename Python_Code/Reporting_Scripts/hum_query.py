@@ -31,8 +31,8 @@ def query_humidity():
         # humidity_value = data.get('BME_Humidity')
             if container in humidity_data:
                 humidity_data[container].append({
-                    'Date_Time': data['Date_Time'],
-                    'BME_Humidity': data['BME_Humidity']
+                    'Date_Time': data.get('Date_Time'),
+                    'BME_Humidity': data.get('BME_Humidity')
                 })
                 print(container)
         

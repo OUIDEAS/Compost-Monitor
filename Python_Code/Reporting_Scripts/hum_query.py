@@ -1,6 +1,7 @@
 import json
 from pymongo import MongoClient
 from datetime import datetime
+import numpy as np
 
 def query_humidity():
     # Connect to MongoDB
@@ -67,7 +68,7 @@ def query_humidity():
     for container in ['Container_1', 'Container_2', 'Container_3', 'Container_4']:
         print(container, len(humidity_data[container]))
         # print(humidity_data.keys())
-        for i in range(len(humidity_data[container])):
+        for i in np.linspace(0, len(humidity_data[container]), len(humidity_data[container])/10):
             for entry in humidity_data[container]:
                 timestamp = entry['Date_Time']
                 # print(entry['BME_Humidity'])

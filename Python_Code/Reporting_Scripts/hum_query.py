@@ -67,7 +67,7 @@ def query_humidity():
     print(humidity_data['Container_1'][100])
     # For each container's humidity data, calculate the relative humidity
     for container in ['Container_1', 'Container_2', 'Container_3', 'Container_4']:
-        print(container, len(humidity_data[container]))
+        print(container, len(humidity_data['Container_3']))
         # print(humidity_data.keys())
         for i in np.linspace(0, 59010, 5901):
             # print(int(i))

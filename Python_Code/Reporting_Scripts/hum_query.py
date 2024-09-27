@@ -30,6 +30,7 @@ def query_humidity():
         # timestamp = data.get('Date_Time')
         # humidity_value = data.get('BME_Humidity')
             if container in humidity_data:
+                print(data.get('BME_Humidity'))
                 humidity_data[container].append({
                     'Date_Time': data.get('Date_Time'),
                     'BME_Humidity': data.get('BME_Humidity'),

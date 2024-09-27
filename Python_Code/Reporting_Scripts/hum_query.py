@@ -99,8 +99,11 @@ def query_humidity():
     output_data = {
         'BME_Humditiy': humidity_data,
         'Relative_Humidity': relative_humidity,
-
     }
+
+    for container in humidity_data:
+        for entry in humidity_data[container]:
+            entry['Date_Time'] = entry['Date_Time'].isoformat() if isinstance(entry['Date_Time'], datetime) else entry['Date_Time']
 
     with open('relative_humidity_data.json', 'w') as json_file:
         json.dump(output_data, json_file, indent=4)

@@ -83,8 +83,8 @@ def query_humidity():
                 'relative_humidity': float(humidity_data[container][int(i)]['BME_Humidity']) - float(humidity_data['Container_3'][int(i)]['BME_Humidity']),
                 'Container_No': container
             })
-            time.sleep(1)
-            print(relative_humidity['Container_1_Relative_Humidity'], i)
+            # time.sleep(1)
+            # print(relative_humidity['Container_1_Relative_Humidity'], i)
                 # print('OKAY')
     
                 # else:

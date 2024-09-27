@@ -36,7 +36,7 @@ def query_humidity():
                     'Container_No': data.get('Container_No')
                 })
                 # print(container)
-    print(humidity_data)
+    # print(humidity_data)
     # rel_hum1 = humidity_data[]
 
     for container, data in humidity_data.items():

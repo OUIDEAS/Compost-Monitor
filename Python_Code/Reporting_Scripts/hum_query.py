@@ -39,8 +39,8 @@ def query_humidity():
     # print(humidity_data)
     # rel_hum1 = humidity_data[]
 
-    for container, data in humidity_data.items():
-        print(f"{container}: {data}")
+    # for container, data in humidity_data.items():
+    #     print(f"{container}: {data}")
         # if timestamp is not None and humidity_value is not None:
         #     # Ensure humidity_value is converted to float
         #     humidity_data[f'Container_{container_id}'].append({
@@ -62,6 +62,7 @@ def query_humidity():
 
     # For each container's humidity data, calculate the relative humidity
     for container in ['Container_1', 'Container_2', 'Container_4']:
+        print(humidity_data)
         for entry in humidity_data[container]:
             timestamp = entry['Date_Time']
             if timestamp in humidity_data[3]:

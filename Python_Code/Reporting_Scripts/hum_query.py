@@ -36,7 +36,7 @@ def query_humidity():
                 if data.get('BME_Humidity')!=None:
                     # print(data.get('BME_Humidity'), container)
                     humidity_data[container].append({
-                        'Date_Time': data.get('Date_Time'),
+                        'Date_Time': data.get('Date_Time').isoformat() if isinstance(data.get('Date_Time'), datetime) else data.get('Date_Time'),
                         'BME_Humidity': data.get('BME_Humidity'),
                         'Container_No': data.get('Container_No')
                     })
@@ -68,7 +68,7 @@ def query_humidity():
     print(humidity_data['Container_1'][100])
     # For each container's humidity data, calculate the relative humidity
     for container in ['Container_1', 'Container_2', 'Container_3', 'Container_4']:
-        print(container, len(humidity_data['Container_3']))
+        # print(container, len(humidity_data['Container_3']))
         # print(humidity_data.keys())
         if len(humidity_data[container]) < len(humidity_data['Container_3']):
             cont = container

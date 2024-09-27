@@ -16,23 +16,36 @@ def query_humidity():
         'Container_4': []
     }
 
+    results = list(collection.find({}, {"BME_Humidity": 1, "Date_Time": 1, "Container_No": 1, "_id": 0}))
     # Query for all documents in the collection for containers 1, 2, 3, and 4
-    for container_id in ['1', '2', '3', '4']:
-        results = collection.find({'Container_No': container_id, 'BME_Humidity': { '$exists': True }}, {'Date_Time': 1, 'BME_Humidity': 1})
-        print(f"Results for Container {container_id}:")
-        for data in results:
-            print(data)  # Print the document for debugging
-            timestamp = data.get('Date_Time')
-            humidity_value = data.get('BME_Humidity')
+    # for container_id in ['1', '2', '3', '4']:
+        
 
-            if timestamp is not None and humidity_value is not None:
-                # Ensure humidity_value is converted to float
-                humidity_data[f'Container_{container_id}'].append({
-                    'timestamp': timestamp.isoformat(),  # Convert datetime to ISO format string
-                    'humidity': float(humidity_value)  # Convert to float
-                })
-            else:
-                print(f"Missing data for Container {container_id} - Timestamp: {timestamp}, Humidity: {humidity_value}")
+    # print(f"Results for Container {container_id}:")
+    for data in results:
+        container = f"Container_{data['Container_No']}"
+        # print(data)  # Print the document for debugging
+        # timestamp = data.get('Date_Time')
+        # humidity_value = data.get('BME_Humidity')
+        if container in humidity_data:
+            humidity_data[container].append({
+                'Date_Time': data['Date_Time'],
+                'BME_Humidity': data['BME_Humidity']
+            })
+            print(container)
+        
+    # rel_hum1 = humidity_data[]
+
+    for container, data in humidity_data.items():
+        print(f"{container}: {data}")
+        # if timestamp is not None and humidity_value is not None:
+        #     # Ensure humidity_value is converted to float
+        #     humidity_data[f'Container_{container_id}'].append({
+        #         'timestamp': timestamp.isoformat(),  # Convert datetime to ISO format string
+        #         'humidity': float(humidity_value)  # Convert to float
+        #     })
+        # else:
+        #     print(f"Missing data for Container {container_id} - Timestamp: {timestamp}, Humidity: {humidity_value}")
 
     # Calculate relative humidity for containers 1, 2, and 4 based on container 3
     relative_humidity = {

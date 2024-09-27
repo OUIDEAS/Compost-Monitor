@@ -69,7 +69,7 @@ def query_humidity():
     for container in ['Container_1', 'Container_2', 'Container_3', 'Container_4']:
         print(container, len(humidity_data['Container_3']))
         # print(humidity_data.keys())
-        for i in np.linspace(0, 59010, 5901):
+        for i in range(0, len(humidity_data['Container_3']), 10):
             # print(int(i))
             # for entry in humidity_data[container]:
             # print(entry, i)

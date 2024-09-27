@@ -93,7 +93,11 @@ def query_humidity():
 
     # Calculate relative humidity for containers 1, 2, and 4 based on container 3
     for container in ['Container_1', 'Container_2', 'Container_4']:
-        for i in range(len(humidity_data[container])):
+        if len(humidity_data[container]) < len(humidity_data['Container_3']):
+            cont = container
+        else:
+            cont = 'Container_3'
+        for i in range(len(humidity_data[cont])):
             timestamp = humidity_data[container][i]['Date_Time']
             relative_humidity_value = float(humidity_data[container][i]['BME_Humidity']) - float(humidity_data['Container_3'][i]['BME_Humidity'])
             condensed_relative_humidity.append({

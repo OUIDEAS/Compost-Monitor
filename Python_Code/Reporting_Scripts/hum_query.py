@@ -66,7 +66,7 @@ def query_humidity():
     # For each container's humidity data, calculate the relative humidity
     for container in ['Container_1', 'Container_2', 'Container_3', 'Container_4']:
         print(humidity_data.keys())
-        for i in len(humidity_data['Container_1']):
+        for i in range(len(humidity_data['Container_1'])):
             for entry in humidity_data[container]:
                 timestamp = entry['Date_Time']
                 print(entry['BME_Humidity'])

@@ -84,7 +84,7 @@ def query_humidity():
                 'Container_No': container
             })
             time.sleep(1)
-            print(relative_humidity, i)
+            print(relative_humidity['Container_1_Relative_Humidity'], i)
                 # print('OKAY')
     
                 # else:

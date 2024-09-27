@@ -58,17 +58,18 @@ def query_humidity():
     }
 
     # Create a dictionary to map container 3's humidity values to their timestamps
-    container_3_humidity_dict = {entry['Date_Time']: entry['BME_Humidity'] for entry in humidity_data['Container_3']}
+    
 
     # For each container's humidity data, calculate the relative humidity
     for container in ['Container_1', 'Container_2', 'Container_4']:
         for entry in humidity_data[container]:
             timestamp = entry['Date_Time']
-            if timestamp in container_3_humidity_dict:
+            if timestamp in humidity_data[3]:
                 relative_humidity[f'{container}_Relative_Humidity'].append({
                     'Date_Time': timestamp,
-                    'relative_humidity': entry['BME_Humidity'] - container_3_humidity_dict[timestamp]
+                    'relative_humidity': entry[timestamp].get('BME_Humidity') - humidity_data[3][timestamp].get('BME_Humidity')
                 })
+                print(relative_humidity)
             else:
                 print(f"No matching timestamp in Container 3 for {container} - Timestamp: {timestamp}")
 

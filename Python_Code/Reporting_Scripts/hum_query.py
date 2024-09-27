@@ -24,7 +24,7 @@ def query_humidity():
     # print(f"Results for Container {container_id}:")
     for data in results:
         print(data.get('Container_No'))
-        if 'Container_No' != 'Ambient':
+        if data.get('Container_No') != 'Ambient' and data.get('Container_No') != None:
             container = f"Container_{data['Container_No']}"
         # print(data)  # Print the document for debugging
         # timestamp = data.get('Date_Time')

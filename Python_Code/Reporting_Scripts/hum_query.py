@@ -78,7 +78,7 @@ def query_humidity():
                     'relative_humidity': float(entry['BME_Humidity']) - float(humidity_data['Container_3'][i]['BME_Humidity']),
                     'Container_No': container
                 })
-                print('OKAY')
+                # print('OKAY')
     
                 # else:
                 #     print(f"No matching timestamp in Container 3 for {container} - Timestamp: {timestamp}")

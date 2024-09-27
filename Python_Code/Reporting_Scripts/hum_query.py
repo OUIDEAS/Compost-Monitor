@@ -30,12 +30,14 @@ def query_humidity():
         # timestamp = data.get('Date_Time')
         # humidity_value = data.get('BME_Humidity')
             if container in humidity_data:
-                print(data.get('BME_Humidity'))
-                humidity_data[container].append({
-                    'Date_Time': data.get('Date_Time'),
-                    'BME_Humidity': data.get('BME_Humidity'),
-                    'Container_No': data.get('Container_No')
-                })
+                
+                if data.get('BME_Humidity')!=None:
+                    print(data.get('BME_Humidity'), container)
+                    humidity_data[container].append({
+                        'Date_Time': data.get('Date_Time'),
+                        'BME_Humidity': data.get('BME_Humidity'),
+                        'Container_No': data.get('Container_No')
+                    })
                 # print(container)
     # print(humidity_data)
     # rel_hum1 = humidity_data[]

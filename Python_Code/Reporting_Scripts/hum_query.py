@@ -64,7 +64,7 @@ def query_humidity():
     
     print(humidity_data['Container_1'][100])
     # For each container's humidity data, calculate the relative humidity
-    for container in ['Container_1', 'Container_2', 'Container_4']:
+    for container in ['Container_1', 'Container_2', 'Container_3', 'Container_4']:
         print(humidity_data.keys())
         for entry in humidity_data[container]:
             timestamp = entry['Date_Time']
@@ -73,7 +73,8 @@ def query_humidity():
             # if timestamp in humidity_data['Container_3']:
             relative_humidity[f'{container}_Relative_Humidity'].append({
                 'Date_Time': timestamp,
-                'relative_humidity': entry[timestamp].get('BME_Humidity') - humidity_data['Container_3'][timestamp].get('BME_Humidity')
+                'relative_humidity': entry['BME_Humidity'] - humidity_data['Container_3']['BME_Humidity'],
+                'Container_No': container
             })
             print(relative_humidity)
             # else:
@@ -81,8 +82,9 @@ def query_humidity():
 
     # Export the results to a JSON file
     output_data = {
-        'Container_Humidity': humidity_data,
-        'Relative_Humidity': relative_humidity
+        'BME_Humditiy': humidity_data,
+        'Relative_Humidity': relative_humidity,
+
     }
 
     with open('relative_humidity_data.json', 'w') as json_file:

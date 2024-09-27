@@ -69,6 +69,7 @@ def query_humidity():
         print(container, len(humidity_data[container]))
         # print(humidity_data.keys())
         for i in np.linspace(0, 59010, 5901):
+            print(i)
             for entry in humidity_data[container]:
                 timestamp = entry['Date_Time']
                 # print(entry['BME_Humidity'])

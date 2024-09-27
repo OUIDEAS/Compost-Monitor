@@ -56,36 +56,49 @@ def query_humidity():
         #     print(f"Missing data for Container {container_id} - Timestamp: {timestamp}, Humidity: {humidity_value}")
 
     # Calculate relative humidity for containers 1, 2, and 4 based on container 3
-    relative_humidity = {
-        'Container_1_Relative_Humidity': [],
-        'Container_2_Relative_Humidity': [],
-        'Container_3_Relative_Humidity': [],
-        'Container_4_Relative_Humidity': []
-    }
 
-    # Create a dictionary to map container 3's humidity values to their timestamps
+    # relative_humidity = {
+    #     'Container_1_Relative_Humidity': [],
+    #     'Container_2_Relative_Humidity': [],
+    #     'Container_3_Relative_Humidity': [],
+    #     'Container_4_Relative_Humidity': []
+    # }
+
+    # # Create a dictionary to map container 3's humidity values to their timestamps
     
-    print(humidity_data['Container_1'][100])
-    # For each container's humidity data, calculate the relative humidity
-    for container in ['Container_1', 'Container_2', 'Container_3', 'Container_4']:
-        # print(container, len(humidity_data['Container_3']))
-        # print(humidity_data.keys())
-        if len(humidity_data[container]) < len(humidity_data['Container_3']):
-            cont = container
-        else:
-            cont = 'Container_3'
-        for i in range(0, len(humidity_data[cont]), 10):
-            # print(int(i))
-            # for entry in humidity_data[container]:
-            # print(entry, i)
-            timestamp = humidity_data[container][int(i)]['Date_Time']
-            # print(entry['BME_Humidity'])
-            # print(humidity_data['Container_3'][i]['BME_Humidity'])
-            # print(container, i)
-            # if timestamp in humidity_data['Container_3']:
-            relative_humidity[f'{container}_Relative_Humidity'].append({
+    # print(humidity_data['Container_1'][100])
+    # # For each container's humidity data, calculate the relative humidity
+    # for container in ['Container_1', 'Container_2', 'Container_3', 'Container_4']:
+    #     # print(container, len(humidity_data['Container_3']))
+    #     # print(humidity_data.keys())
+    #     if len(humidity_data[container]) < len(humidity_data['Container_3']):
+    #         cont = container
+    #     else:
+    #         cont = 'Container_3'
+    #     for i in range(0, len(humidity_data[cont]), 10):
+    #         # print(int(i))
+    #         # for entry in humidity_data[container]:
+    #         # print(entry, i)
+    #         timestamp = humidity_data[container][int(i)]['Date_Time']
+    #         # print(entry['BME_Humidity'])
+    #         # print(humidity_data['Container_3'][i]['BME_Humidity'])
+    #         # print(container, i)
+    #         # if timestamp in humidity_data['Container_3']:
+    #         relative_humidity[f'{container}_Relative_Humidity'].append({
+    #             'Date_Time': timestamp,
+    #             'relative_humidity': float(humidity_data[container][int(i)]['BME_Humidity']) - float(humidity_data['Container_3'][int(i)]['BME_Humidity']),
+    #             'Container_No': container
+    #         })
+    condensed_relative_humidity = []
+
+    # Calculate relative humidity for containers 1, 2, and 4 based on container 3
+    for container in ['Container_1', 'Container_2', 'Container_4']:
+        for i in range(len(humidity_data[container])):
+            timestamp = humidity_data[container][i]['Date_Time']
+            relative_humidity_value = float(humidity_data[container][i]['BME_Humidity']) - float(humidity_data['Container_3'][i]['BME_Humidity'])
+            condensed_relative_humidity.append({
                 'Date_Time': timestamp,
-                'relative_humidity': float(humidity_data[container][int(i)]['BME_Humidity']) - float(humidity_data['Container_3'][int(i)]['BME_Humidity']),
+                'Relative_Humidity': relative_humidity_value,
                 'Container_No': container
             })
             # time.sleep(1)
@@ -98,7 +111,7 @@ def query_humidity():
     # Export the results to a JSON file
     output_data = {
         'BME_Humditiy': humidity_data,
-        'Relative_Humidity': relative_humidity,
+        'Relative_Humidity': condensed_relative_humidity,
     }
 
     for container in humidity_data:

@@ -71,6 +71,7 @@ def query_humidity():
         for i in np.linspace(0, 59010, 5901):
             # print(int(i))
             for entry in humidity_data[container]:
+                print(entry, i)
                 timestamp = entry['Date_Time']
                 # print(entry['BME_Humidity'])
                 # print(humidity_data['Container_3'][i]['BME_Humidity'])
@@ -81,6 +82,7 @@ def query_humidity():
                     'relative_humidity': float(entry['BME_Humidity']) - float(humidity_data['Container_3'][int(i)]['BME_Humidity']),
                     'Container_No': container
                 })
+                print(relative_humidity)
                 # print('OKAY')
     
                 # else:

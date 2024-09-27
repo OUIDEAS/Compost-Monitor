@@ -59,6 +59,7 @@ def query_humidity():
     relative_humidity = {
         'Container_1_Relative_Humidity': [],
         'Container_2_Relative_Humidity': [],
+        'Container_3_Relative_Humidity': [],
         'Container_4_Relative_Humidity': []
     }
 

@@ -68,7 +68,7 @@ def query_humidity():
         print(humidity_data.keys())
         for entry in humidity_data[container]:
             timestamp = entry['Date_Time']
-            print('BME_Humidity')
+            print(entry['BME_Humidity'])
 
             # if timestamp in humidity_data['Container_3']:
             relative_humidity[f'{container}_Relative_Humidity'].append({

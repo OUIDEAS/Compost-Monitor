@@ -50,8 +50,10 @@ p = multiprocessing.Process(target = upload_to_database, args = (O2_DataDict,))
 
 while 1:
     O2_inbyte = serialPort.read(size=1)
+    
     with open(logFileO2, 'ab') as l:
         l.write(O2_inbyte)
+        print(f"O2 Sensor byte: {O2_inbyte}")
     bytearray.append(O2_inbyte)
     if O2_inbyte == b'\r':
         bytearray.pop()

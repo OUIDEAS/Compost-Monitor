@@ -50,8 +50,8 @@ p = multiprocessing.Process(target = upload_to_database, args = (O2_DataDict,))
 
 loopTimer = 90
 
-readCommand = 'R\r'         # EZO sensors reply with 1 reading after 
-readCommand.encode('utf-8') # command has to be encoded to bytes for the sensor to understand it
+readCommand = 'R\r'.encode('utf-8')         # EZO sensors reply with 1 reading after 
+# readCommand # command has to be encoded to bytes for the sensor to understand it
 
 while 1:
     serialPort.reset_input_buffer()         # clear incoming data to make sure reading is only current data
@@ -60,6 +60,7 @@ while 1:
     loopStartTime = time.time()
     time.sleep(1)
     O2_inbyte = serialPort.read(size=1)
+    print(f"O2 Sensor byte: {O2_inbyte}")
     while serialPort.in_waiting:
         with open(logFileO2, 'ab') as l:
             l.write(O2_inbyte)

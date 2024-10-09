@@ -49,8 +49,8 @@ def upload_to_database(data):
 
 p = multiprocessing.Process(target=upload_to_database, args=(CO2_DataDict,))
 
-readCommand = 'R\r'
-readCommand.encode('utf-8')
+readCommand = 'R\r'.encode('utf-8')
+# readCommand.
 
 loopTimer = 90
 
@@ -60,10 +60,12 @@ while 1:
     CO2Serial.write(readCommand)
     loopStartTime = time.time()
     time.sleep(1)
-
+    CO2_inbyte = CO2Serial.read(size=1)
+    print(f"CO2 Sensor byte: {CO2_inbyte}")
     while CO2Serial.in_waiting:
 
         CO2_inbyte = CO2Serial.read(size=1)
+        print(f"CO2 Sensor byte: {CO2_inbyte}")
         with open(logFileCO2, 'ab') as l:
             l.write(CO2_inbyte)
         # print(CO2_inbyte)

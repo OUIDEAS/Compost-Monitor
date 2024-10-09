@@ -1,7 +1,7 @@
 import mysql.connector
 
 mydb = mysql.connector.connect(
-  host="localhost",
+  host="100.114.38.109",
   user="root",
   password="pixhawk2",
   database="tutorial"
@@ -65,7 +65,7 @@ mycursor = mydb.cursor()
 #   print(x)
 # print(myresult)
 
-sql = "create table "
+sql = "create table TUT"
 # adr = ("Yellow Garden 2", )
 
 mycursor.execute(sql)

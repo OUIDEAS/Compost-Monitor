@@ -112,12 +112,12 @@ while True:
             if is_valid_co2_concentration(CO2_Con):
                 # Prepare the data to add to the pandas DataFrame
                 CO2_DataDict = {
-                    'container_no': args.containernumber,
-                    'dateTime': overallList[0],
-                    'CO2_CON': CO2_Con,
+                    'container_no': [args.containernumber],
+                    'dateTime': [overallList[0]],
+                    'CO2_CON': [CO2_Con],
                 }
                 dfn = pd.DataFrame(CO2_DataDict)
-                data_frame = pd.concat([data_frame, dfn])
+                data_frame = pd.concat([data_frame, dfn], ignore_index=True)
                 mycursor.execute('use tutorial; delete from table1;')
                 data_frame.to_sql(name='table1', con=engine, if_exists='replace')
                 

@@ -53,7 +53,7 @@ loopTimer = 90
 readCommand = 'R\r'.encode('utf-8')         # EZO sensors reply with 1 reading after 
 # readCommand # command has to be encoded to bytes for the sensor to understand it
 
-while 1:
+while True:
     serialPort.reset_input_buffer()         # clear incoming data to make sure reading is only current data
     serialPort.reset_output_buffer()        # clear outgoing data to make sure only the intended command is sent
     serialPort.write(readCommand)

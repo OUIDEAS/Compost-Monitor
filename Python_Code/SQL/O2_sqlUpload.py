@@ -45,7 +45,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 # Create a pandas DataFrame to hold the sensor data
-data_frame = pd.DataFrame(columns=['SensID','BuckID','ExpNum','DT','dateTime','O2_CON','Unit'])
+data_frame = pd.DataFrame(columns=['SensID','Sensor','BuckID','ExpNum','DT','dateTime','O2_CON','Unit'])
 
 startTime = time.time()
 
@@ -91,7 +91,7 @@ while True:
             overallList.pop(0)
 
             O2_Con = overallList[1]
-            print(O2_Con)
+            print('O2 CON:', O2_Con)
 
             if O2_Con != '*OK':
                 # Prepare the data to add to the pandas DataFrame
@@ -107,6 +107,7 @@ while True:
                 }
                 dfn = pd.DataFrame(O2_DataDict)
                 data_frame = pd.concat([data_frame, dfn], ignore_index=True)
+                print(data_frame)
                 data_frame.to_sql(name='O2', con=engine, if_exists='replace')
                 print('O2 Data Uploaded to SQL Database!')
             else:

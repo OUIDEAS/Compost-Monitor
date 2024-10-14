@@ -41,7 +41,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 # Create a pandas DataFrame to hold the sensor data
-data_frame = pd.DataFrame(columns=['SensID','BuckID','ExpNum','DT','dateTime','CO2_CON','Unit'])
+data_frame = pd.DataFrame(columns=['SensID','Sensor','BuckID','ExpNum','DT','dateTime','CO2_CON','Unit'])
 
 startTime = time.time()
 

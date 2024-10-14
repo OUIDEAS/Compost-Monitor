@@ -113,6 +113,7 @@ while True:
                 # Prepare the data to add to the pandas DataFrame
                 CO2_DataDict = {
                     'SensID': [CO2Port],
+                    'Sensor': ['EZO_CO2'],
                     'BuckID': [args.containernumber],
                     'ExpNum': [0],
                     'DT': [loopTimer],

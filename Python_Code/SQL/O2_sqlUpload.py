@@ -30,11 +30,6 @@ DataList = []
 overallList = [0,0]
 O2_DataDict = {}
 
-header = ['Date/Time', 'O2 Concentration (%)']
-
-startTime = time.time()
-startup = True
-
 
 mydb = mysql.connector.connect(
   host="100.114.38.109",
@@ -52,12 +47,6 @@ startTime = time.time()
 # Set up the MySQL connection using SQLAlchemy for pandas to_sql
 engine = create_engine("mysql+mysqlconnector://root:pixhawk2@localhost/tutorial")  # Replace 'yourpassword' with your SQL root password
 
-def is_valid_o2_concentration(value):
-    """ Check if the value is a valid numeric O2 concentration. """
-    if value != '*OK':
-        return True
-    else:
-        return False
 
 
 readCommand = 'R\r'.encode('utf-8')

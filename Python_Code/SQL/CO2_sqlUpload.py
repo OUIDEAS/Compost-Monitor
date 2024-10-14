@@ -98,7 +98,7 @@ while True:
                 dfn = pd.DataFrame(CO2_DataDict)
                 data_frame = pd.concat([data_frame, dfn], ignore_index=True)
                 data_frame.to_sql(name='CO2', con=engine, if_exists='replace')
-                print('O2 Data Uploaded to SQL Database!')
+                print('CO2 Data Uploaded to SQL Database!')
 
             else:
                 print(f"Invalid CO2 concentration data received: {CO2_Con}")

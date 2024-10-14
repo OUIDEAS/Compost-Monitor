@@ -118,7 +118,7 @@ while True:
                 }
                 dfn = pd.DataFrame(CO2_DataDict)
                 data_frame = pd.concat([data_frame, dfn], ignore_index=True)
-                mycursor.execute('use tutorial; delete from table1;')
+                # mycursor.execute('use tutorial; delete from table1;')
                 data_frame.to_sql(name='table1', con=engine, if_exists='replace')
                 
                 # Upload the new data to the SQL database using pandas

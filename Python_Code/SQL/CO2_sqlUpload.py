@@ -50,26 +50,30 @@ engine = create_engine("mysql+mysqlconnector://root:pixhawk2@localhost/tutorial"
 
 def is_valid_co2_concentration(value):
     """ Check if the value is a valid numeric CO2 concentration. """
-    try:
-        # Try to convert the value to a float (or int)
-        float(value)
+    if value != '*OK':
         return True
-    except ValueError:
+    else:
         return False
+    # try:
+    #     # Try to convert the value to a float (or int)
+    #     float(value)
+    #     return True
+    # except ValueError:
+    #     return False
 
-def upload_to_sql(data):
-    global data_frame
+# def upload_to_sql(data):
+#     global data_frame
     
-    # with engine.connect() as connection:
-    #     connection.execute(text("DELETE FROM CO2;"))
-    mycursor.execute("USE tutorial; delete from CO2;")
-    # Append new data to the DataFrame
-    new_data = pd.DataFrame([data])
-    data_frame = pd.concat([data_frame, new_data], ignore_index=True)
+#     # with engine.connect() as connection:
+#     #     connection.execute(text("DELETE FROM CO2;"))
+#     mycursor.execute("USE tutorial; delete from CO2;")
+#     # Append new data to the DataFrame
+#     new_data = pd.DataFrame([data])
+#     data_frame = pd.concat([data_frame, new_data], ignore_index=True)
     
-    # Upload to SQL table 'table1'
-    data_frame.to_sql('CO2', con=engine, if_exists='append', index=False)
-    print(f"Data uploaded to SQL for Container {args.containernumber}")
+#     # Upload to SQL table 'table1'
+#     data_frame.to_sql('CO2', con=engine, if_exists='append', index=False)
+#     print(f"Data uploaded to SQL for Container {args.containernumber}")
 
 readCommand = 'R\r'.encode('utf-8')
 loopTimer = 90
@@ -102,6 +106,7 @@ while True:
             overallList.pop(0)
 
             CO2_Con = overallList[1]
+            print(CO2_Con)
 
             # Validate if the CO2 concentration is a valid numeric value
             if is_valid_co2_concentration(CO2_Con):
@@ -111,9 +116,13 @@ while True:
                     'dateTime': overallList[0],
                     'CO2_CON': CO2_Con,
                 }
+                dfn = pd.DataFrame(CO2_DataDict)
+                data_frame = pd.concat([data_frame, dfn])
+                mycursor.execute('use tutorial; delete from table1;')
+                data_frame.to_sql(name='table1', con=engine, if_exists='replace')
                 
                 # Upload the new data to the SQL database using pandas
-                upload_to_sql(CO2_DataDict)
+                # upload_to_sql(CO2_DataDict)
             else:
                 print(f"Invalid CO2 concentration data received: {CO2_Con}")
 

@@ -117,8 +117,8 @@ while True:
         byteArray = []
         count += 1
             
-    # while (time.time() - loopStartTime) < loopTimer:
-    #     time.sleep(0.1)
+    while (time.time() - loopStartTime) < loopTimer:
+        time.sleep(0.1)
 
     if time.time() - startTime >= 3600:
         count = 0

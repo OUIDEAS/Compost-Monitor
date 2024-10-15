@@ -72,7 +72,7 @@ while True:
 
     while CH4Serial.in_waiting:
         newb = CH4Serial.read(size=1)
-        print(newb)
+        # print(newb)
         barray.append(newb)
         lencount += 1
         # log.write(newb)
@@ -134,11 +134,11 @@ while True:
                                     'Parse_3': overallList[3], 
                                     'Parse_5': overallList[5],
                                     'Parse_6': overallList[6]}
-                print('Methane in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
+                # print('Methane in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
                 dfn = pd.DataFrame(CH4_DataDict)
                 data_frame = pd.concat([data_frame, dfn], ignore_index=True)
                 data_frame.to_sql(name='CH4', con=engine, if_exists='replace')
-                print('CH4 Data Uploaded to SQL Database!')
+                print('CH4 Data Uploaded to SQL Database!', 'CH4_Con:', overallList[4])
             
             else:
                 print(f"Invalid CH4 concentration data received: {overallList[4]}")
@@ -167,15 +167,15 @@ while True:
 
             count += 1
 
-        while (time.time() - loopStartTime) < loopTimer:
-            time.sleep(0.1)
+    while (time.time() - loopStartTime) < loopTimer:
+        time.sleep(0.1)
 
-        if time.time() - startTime >= 3600:
-            count = 0
-            DataList = []
-            overallList = [0,0]
-            startTime = time.time()
-            logFileCH4 = '{}/CH4_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber,
-                                                                time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))
+    if time.time() - startTime >= 3600:
+        count = 0
+        DataList = []
+        overallList = [0,0]
+        startTime = time.time()
+        logFileCH4 = '{}/CH4_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber,
+                                                            time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))
 
     

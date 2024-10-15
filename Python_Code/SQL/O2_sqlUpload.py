@@ -60,11 +60,11 @@ while True:
     time.sleep(1)
     
     O2_inbyte = O2Serial.read(size=1)
-    print(f"O2 Sensor byte: {O2_inbyte}")
+    # print(f"O2 Sensor byte: {O2_inbyte}")
     
     while O2Serial.in_waiting:
         O2_inbyte = O2Serial.read(size=1)
-        print(f"O2 Sensor byte: {O2_inbyte}")
+        # print(f"O2 Sensor byte: {O2_inbyte}")
         with open(logFileO2, 'ab') as l:
             l.write(O2_inbyte)
         bytearray.append(O2_inbyte)
@@ -80,7 +80,7 @@ while True:
             overallList.pop(0)
 
             O2_Con = overallList[1]
-            print('O2 CON:', O2_Con)
+            # print('O2 CON:', O2_Con)
 
             if O2_Con != '*OK':
                 # Prepare the data to add to the pandas DataFrame
@@ -97,7 +97,7 @@ while True:
                 dfn = pd.DataFrame(O2_DataDict)
                 data_frame = pd.concat([data_frame, dfn], ignore_index=True)
                 data_frame.to_sql(name='O2', con=engine, if_exists='replace')
-                print('O2 Data Uploaded to SQL Database!')
+                print('O2 Data Uploaded to SQL Database!', 'O2 CON:', O2_Con)
             else:
                 print(f"Invalid O2 concentration data received: {O2_Con}")
 

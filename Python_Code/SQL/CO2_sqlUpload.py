@@ -60,11 +60,11 @@ while True:
     time.sleep(1)
     
     CO2_inbyte = CO2Serial.read(size=1)
-    print(f"CO2 Sensor byte: {CO2_inbyte}")
+    # print(f"CO2 Sensor byte: {CO2_inbyte}")
     
     while CO2Serial.in_waiting:
         CO2_inbyte = CO2Serial.read(size=1)
-        print(f"CO2 Sensor byte: {CO2_inbyte}")
+        # print(f"CO2 Sensor byte: {CO2_inbyte}")
         with open(logFileCO2, 'ab') as l:
             l.write(CO2_inbyte)
         bytearray.append(CO2_inbyte)
@@ -80,7 +80,7 @@ while True:
             overallList.pop(0)
 
             CO2_Con = overallList[1]
-            print(CO2_Con)
+            # print(CO2_Con)
 
             # Validate if the CO2 concentration is a valid numeric value
             if CO2_Con != '*OK':
@@ -98,7 +98,7 @@ while True:
                 dfn = pd.DataFrame(CO2_DataDict)
                 data_frame = pd.concat([data_frame, dfn], ignore_index=True)
                 data_frame.to_sql(name='CO2', con=engine, if_exists='replace')
-                print('CO2 Data Uploaded to SQL Database!')
+                print('CO2 Data Uploaded to SQL Database!', 'CO2_CON:', CO2_Con)
 
             else:
                 print(f"Invalid CO2 concentration data received: {CO2_Con}")

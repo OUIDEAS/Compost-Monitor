@@ -59,8 +59,8 @@ while True:
     # RBSerial.reset_input_buffer()
     # RBSerial.reset_output_buffer()
     # RBSerial.write(readCommand)
-    loopStartTime = time.time()
-    time.sleep(1)
+    # loopStartTime = time.time()
+    # time.sleep(1)
     # print('I AM HERE')
     # 
     RB_inbyte = RBSerial.read(size=1)
@@ -117,8 +117,8 @@ while True:
         byteArray = []
         count += 1
             
-    while (time.time() - loopStartTime) < loopTimer:
-        time.sleep(0.1)
+    # while (time.time() - loopStartTime) < loopTimer:
+    #     time.sleep(0.1)
 
     if time.time() - startTime >= 3600:
         count = 0

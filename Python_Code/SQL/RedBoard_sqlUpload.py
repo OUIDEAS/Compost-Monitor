@@ -66,59 +66,59 @@ while True:
     RB_inbyte = RBSerial.read(size=1)
 
     print(RB_inbyte)
-    while RBSerial.in_waiting:
-        RB_inbyte = RBSerial.read(size=1)
-        with open(logFileRB, 'ab') as l:
-            l.write(RB_inbyte)
-        byteArray.append(RB_inbyte)
-        if RB_inbyte == b'\n':
-            print('IN THE LOOP')
-            # Remove the newline character from the end of the array
-            byteArray.pop()
+    # while RBSerial.in_waiting:
+        # RB_inbyte = RBSerial.read(size=1)
+    with open(logFileRB, 'ab') as l:
+        l.write(RB_inbyte)
+    byteArray.append(RB_inbyte)
+    if RB_inbyte == b'\n' or RB_inbyte == b'0':
+        print('IN THE LOOP')
+        # Remove the newline character from the end of the array
+        byteArray.pop()
 
-            # Split the data array into a list
-            RB_DataSplit = ''.join(str(byteArray)).replace(" ", "").replace('b', '').replace("'", '').replace(",", ''). \
-                replace('[', '').replace(']', '').split(';')
+        # Split the data array into a list
+        RB_DataSplit = ''.join(str(byteArray)).replace(" ", "").replace('b', '').replace("'", '').replace(",", ''). \
+            replace('[', '').replace(']', '').split(';')
 
-            # Start the main list with a timestamp
-            RB_DataList.append(datetime.datetime.now())
+        # Start the main list with a timestamp
+        RB_DataList.append(datetime.datetime.now())
 
-            # Add the strings from RB_DataSplit to the list
-            for i in range(len(RB_DataSplit)):
-                RB_DataList.append(RB_DataSplit[i])
+        # Add the strings from RB_DataSplit to the list
+        for i in range(len(RB_DataSplit)):
+            RB_DataList.append(RB_DataSplit[i])
 
-            # Make a dictionary of the data for PyMongo
-            RB_DataDict = {
-                'SensID': [RBport],
-                'Sensor': ['RedBoard'],
-                'BuckID': [args.containernumber],
-                'ExpNum': [0],
-                'DT': [loopTimer],
-                'dateTime': [RB_DataList[0]], 
-                'TVOC_Con': [RB_DataList[1]], 
-                'TVOC_Unit': ['PTS'],
-                'BME_Humidity': [RB_DataList[2]],
-                'Hum_Unit': ['PCT'],
-                'BME_Pressure': [RB_DataList[3]], 
-                'Press_Unit': ['kPa'],
-                'BME_Temp': [RB_DataList[4]], 
-                'Temp_Unit': ['C']
-            }
-            dfn = pd.DataFrame(RB_DataDict)
-            data_frame = pd.concat([data_frame, dfn], ignore_index=True)
-            data_frame.to_sql(name = 'RedBoard', con=engine, if_exists='replace')
-            print('Redboard Data Uploaded to SQL Database!', 'TVOC, Hum, P, T:', RB_DataList[1],RB_DataList[2], RB_DataList[3], RB_DataList[4])
-            print('Time-Stamp for all Uploads:', RB_DataList[0])
-            print('RedBoard in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
+        # Make a dictionary of the data for PyMongo
+        RB_DataDict = {
+            'SensID': [RBport],
+            'Sensor': ['RedBoard'],
+            'BuckID': [args.containernumber],
+            'ExpNum': [0],
+            'DT': [loopTimer],
+            'dateTime': [RB_DataList[0]], 
+            'TVOC_Con': [RB_DataList[1]], 
+            'TVOC_Unit': ['PTS'],
+            'BME_Humidity': [RB_DataList[2]],
+            'Hum_Unit': ['PCT'],
+            'BME_Pressure': [RB_DataList[3]], 
+            'Press_Unit': ['kPa'],
+            'BME_Temp': [RB_DataList[4]], 
+            'Temp_Unit': ['C']
+        }
+        dfn = pd.DataFrame(RB_DataDict)
+        data_frame = pd.concat([data_frame, dfn], ignore_index=True)
+        data_frame.to_sql(name = 'RedBoard', con=engine, if_exists='replace')
+        print('Redboard Data Uploaded to SQL Database!', 'TVOC, Hum, P, T:', RB_DataList[1],RB_DataList[2], RB_DataList[3], RB_DataList[4])
+        print('Time-Stamp for all Uploads:', RB_DataList[0])
+        print('RedBoard in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
 
-            ## Reset the data list
-            RB_DataList = []
+        ## Reset the data list
+        RB_DataList = []
 
-            byteArray = []
-            count += 1
+        byteArray = []
+        count += 1
             
-    while (time.time() - loopStartTime) < loopTimer:
-        time.sleep(0.1)
+    # while (time.time() - loopStartTime) < loopTimer:
+    #     time.sleep(0.1)
 
     if time.time() - startTime >= 3600:
         count = 0

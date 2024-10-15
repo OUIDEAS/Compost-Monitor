@@ -56,23 +56,13 @@ loopTimer = 90
 humidity_values = {} #Store humidity
 
 while True:
-    # RBSerial.reset_input_buffer()
-    # RBSerial.reset_output_buffer()
-    # RBSerial.write(readCommand)
-    # loopStartTime = time.time()
-    # time.sleep(1)
-    # print('I AM HERE')
-    # 
+    time.sleep(1)
     RB_inbyte = RBSerial.read(size=1)
 
-    print(RB_inbyte)
-    # while RBSerial.in_waiting:
-        # RB_inbyte = RBSerial.read(size=1)
-    with open(logFileRB, 'ab') as l:
-        l.write(RB_inbyte)
+    # with open(logFileRB, 'ab') as l:
+    #     l.write(RB_inbyte)
     byteArray.append(RB_inbyte)
-    if RB_inbyte == b'\n' or (count == 0 and RB_inbyte==b'0'):
-        print('IN THE LOOP')
+    if RB_inbyte == b'\n':
         # Remove the newline character from the end of the array
         byteArray.pop()
 
@@ -86,7 +76,6 @@ while True:
         # Add the strings from RB_DataSplit to the list
         for i in range(len(RB_DataSplit)):
             RB_DataList.append(RB_DataSplit[i])
-        print(RB_DataList)
         # Make a dictionary of the data for PyMongo
         RB_DataDict = {
             'SensID': [RBport],

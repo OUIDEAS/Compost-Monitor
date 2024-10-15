@@ -71,7 +71,7 @@ while True:
     with open(logFileRB, 'ab') as l:
         l.write(RB_inbyte)
     byteArray.append(RB_inbyte)
-    if RB_inbyte == b'\n':
+    if RB_inbyte == b'\n' or (count == 0 and RB_inbyte==b'0'):
         print('IN THE LOOP')
         # Remove the newline character from the end of the array
         byteArray.pop()

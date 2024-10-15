@@ -50,7 +50,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 # Create a pandas DataFrame to hold the sensor data
-data_frame = pd.DataFrame(columns=['SensID','Sensor','BuckID','ExpNum','DT','dateTime','CH4_CON','Unit','Parse_1','Parse_2','Parse_3','Parse_4','Parse_5','Parse_6'])
+data_frame = pd.DataFrame(columns=['SensID','Sensor','BuckID','ExpNum','DT','dateTime','CH4_CON','Unit','Parse_1','Parse_2','Parse_3','Parse_5','Parse_6'])
 
 startTime = time.time()
 
@@ -107,6 +107,7 @@ while True:
 
         ## if the packetcount and the size of the packet match, the word is finished - now time to decode
         ## and prepare to start over
+        
         if (packetcount == packetsize + 1):
             wholeInput = b''.join(barray)
             # print(wholeInput)
@@ -118,6 +119,10 @@ while True:
             for i in range(len(unpack)):
                 # print(unpack(i), type(unpack(i)))
                 overallList.append(str(unpack[i]))
+
+            if count == 0:
+                overallList[0] = overallList[2]
+                overallList[2] = 0
             # print(overallList)
             if overallList[4] != '*OK':
                 CH4_DataDict = {

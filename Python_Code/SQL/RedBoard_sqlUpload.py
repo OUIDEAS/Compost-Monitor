@@ -61,13 +61,13 @@ while True:
     # RBSerial.write(readCommand)
     # loopStartTime = time.time()
     # time.sleep(1)
-    print('I AM HERE')
+    # print('I AM HERE')
     # while RBSerial.in_waiting:
     RB_inbyte = RBSerial.read(size=1)
     with open(logFileRB, 'ab') as l:
         l.write(RB_inbyte)
     byteArray.append(RB_inbyte)
-    if RB_inbyte == b'\n':
+    if RB_inbyte == b'\r':
         print('IN THE LOOP')
         # Remove the newline character from the end of the array
         byteArray.pop()

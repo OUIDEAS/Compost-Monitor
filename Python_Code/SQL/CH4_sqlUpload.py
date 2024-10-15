@@ -63,8 +63,8 @@ loopTimer = 90
 
 read_command = (b'\x11\x01\x01\xED')
 while True:
-
-
+    CH4Serial.reset_input_buffer()
+    CH4Serial.reset_output_buffer()
     CH4Serial.write(read_command)
     loopStartTime = time.time()
     time.sleep(1)

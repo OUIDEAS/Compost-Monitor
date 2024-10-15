@@ -56,14 +56,15 @@ loopTimer = 90
 humidity_values = {} #Store humidity
 
 while True:
-    # RBSerial.reset_input_buffer()
-    # RBSerial.reset_output_buffer()
-    # RBSerial.write(readCommand)
-    # loopStartTime = time.time()
-    # time.sleep(1)
+    RBSerial.reset_input_buffer()
+    RBSerial.reset_output_buffer()
+    RBSerial.write(readCommand)
+    loopStartTime = time.time()
+    time.sleep(1)
     # print('I AM HERE')
     # while RBSerial.in_waiting:
     RB_inbyte = RBSerial.read(size=1)
+    print(RB_inbyte)
     with open(logFileRB, 'ab') as l:
         l.write(RB_inbyte)
     byteArray.append(RB_inbyte)

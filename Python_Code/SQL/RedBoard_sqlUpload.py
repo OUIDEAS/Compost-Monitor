@@ -66,6 +66,7 @@ while True:
     RB_inbyte = RBSerial.read(size=1)
     byteArray.append(RB_inbyte)
     if RB_inbyte == b'\n':
+        print('IN THE LOOP')
         # Remove the newline character from the end of the array
         byteArray.pop()
 

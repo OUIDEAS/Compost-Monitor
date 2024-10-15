@@ -98,6 +98,7 @@ while True:
                 data_frame = pd.concat([data_frame, dfn], ignore_index=True)
                 data_frame.to_sql(name='O2', con=engine, if_exists='replace')
                 print('O2 Data Uploaded to SQL Database!', 'O2 CON:', O2_Con)
+                print('sO2 in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
             else:
                 print(f"Invalid O2 concentration data received: {O2_Con}")
 

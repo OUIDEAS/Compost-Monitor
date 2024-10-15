@@ -144,6 +144,7 @@ while True:
                 data_frame = pd.concat([data_frame, dfn], ignore_index=True)
                 data_frame.to_sql(name='CH4', con=engine, if_exists='replace')
                 print('CH4 Data Uploaded to SQL Database!', 'CH4_Con:', overallList[4])
+                print('CH4 in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
             
             else:
                 print(f"Invalid CH4 concentration data received: {overallList[4]}")

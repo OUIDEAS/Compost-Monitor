@@ -97,7 +97,6 @@ while True:
         data_frame = pd.concat([data_frame, dfn], ignore_index=True)
         data_frame.to_sql(name = 'RedBoard', con=engine, if_exists='replace')
         print('Redboard Data Uploaded to SQL Database!', 'TVOC, Hum, P, T:', RB_DataList[1],RB_DataList[2], RB_DataList[3], RB_DataList[4])
-        print('Time-Stamp for all Uploads:', RB_DataList[0])
         print('RedBoard in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
 
         ## Reset the data list

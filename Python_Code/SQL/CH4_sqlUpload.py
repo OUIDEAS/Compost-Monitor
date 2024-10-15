@@ -66,6 +66,7 @@ while True:
 
 
     CH4Serial.write(read_command)
+    loopStartTime = time.time()
     time.sleep(1)
 
 
@@ -166,7 +167,8 @@ while True:
 
             count += 1
 
-            time.sleep(4)
+        while (time.time() - loopStartTime) < loopTimer:
+            time.sleep(0.1)
 
         if time.time() - startTime >= 3600:
             count = 0

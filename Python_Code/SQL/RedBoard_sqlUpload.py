@@ -56,14 +56,16 @@ loopTimer = 90
 humidity_values = {} #Store humidity
 
 while True:
-    RBSerial.reset_input_buffer()
-    RBSerial.reset_output_buffer()
-    RBSerial.write(readCommand)
-    loopStartTime = time.time()
-    time.sleep(1)
+    # RBSerial.reset_input_buffer()
+    # RBSerial.reset_output_buffer()
+    # RBSerial.write(readCommand)
+    # loopStartTime = time.time()
+    # time.sleep(1)
     print('I AM HERE')
     # while RBSerial.in_waiting:
     RB_inbyte = RBSerial.read(size=1)
+    with open(logFileRB, 'ab') as l:
+        l.write(RB_inbyte)
     byteArray.append(RB_inbyte)
     if RB_inbyte == b'\n':
         print('IN THE LOOP')
@@ -89,7 +91,7 @@ while True:
             'ExpNum': [0],
             'DT': [loopTimer],
             'dateTime': [RB_DataList[0]], 
-            'TVOC_Con':[ RB_DataList[1]], 
+            'TVOC_Con': [RB_DataList[1]], 
             'TVOC_Unit': ['PTS'],
             'BME_Humidity': [RB_DataList[2]],
             'Hum_Unit': ['PCT'],
@@ -111,8 +113,8 @@ while True:
         byteArray = []
         count += 1
         
-    while (time.time() - loopStartTime) < loopTimer:
-        time.sleep(0.1)
+    # while (time.time() - loopStartTime) < loopTimer:
+    #     time.sleep(0.1)
 
     if time.time() - startTime >= 3600:
         count = 0

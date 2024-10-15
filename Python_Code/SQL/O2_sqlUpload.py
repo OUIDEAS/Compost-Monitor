@@ -92,7 +92,7 @@ while True:
                     'DT': [loopTimer],
                     'dateTime': [overallList[0]],
                     'O2_CON': [O2_Con],
-                    'Unit': ['PPM']
+                    'Unit': ['PPT']
                 }
                 dfn = pd.DataFrame(O2_DataDict)
                 data_frame = pd.concat([data_frame, dfn], ignore_index=True)

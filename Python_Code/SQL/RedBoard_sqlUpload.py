@@ -58,6 +58,7 @@ humidity_values = {} #Store humidity
 while True:
     loopStartTime = time.time()
     time.sleep(1)
+    print('I AM HERE')
     while RBSerial.in_waiting:
         RB_inbyte = RBSerial.read(size=1)
         byteArray.append(RB_inbyte)

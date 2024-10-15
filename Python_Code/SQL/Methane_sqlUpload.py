@@ -50,7 +50,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 # Create a pandas DataFrame to hold the sensor data
-data_frame = pd.DataFrame(columns=['SensID','Sensor','BuckID','ExpNum','DT','dateTime','CH4_CON','Unit'])
+data_frame = pd.DataFrame(columns=['SensID','Sensor','BuckID','ExpNum','DT','dateTime','CH4_CON','Unit','Parse_1','Parse_2','Parse_3','Parse_4','Parse_5','Parse_6'])
 
 startTime = time.time()
 
@@ -118,12 +118,31 @@ while True:
                 # print(unpack(i), type(unpack(i)))
                 overallList.append(str(unpack[i]))
             # print(overallList)
-
-            methane_DataDict = {'Date_Time': overallList[0], 'Parse_1': overallList[1], 'Parse_2': overallList[2],
-                                'Parse_3': overallList[3], 'Methane_Con': overallList[4], 'Parse_5': overallList[5],
-                                'Parse_6': overallList[6], 'Sensor': 'Methane',
-                                'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
-            print('Methane in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
+            if overallList[4] != '*OK':
+                CH4_DataDict = {
+                                    'SensID': [CH4Port],
+                                    'Sensor': ['Methane'],
+                                    'BuckID': [args.containernumber],
+                                    'ExpNum': [0],
+                                    'DT': [loopTimer],
+                                    'Date_Time': overallList[0],
+                                    'CH4_Con': overallList[4],
+                                    'Unit': ['PCT VOl'],
+                                    'Parse_1': overallList[1], 
+                                    'Parse_2': overallList[2],
+                                    'Parse_3': overallList[3], 
+                                    'Parse_5': overallList[5],
+                                    'Parse_6': overallList[6], 
+                                    
+                                    'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
+                print('Methane in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
+                dfn = pd.DataFrame(CH4_DataDict)
+                data_frame = pd.concat([data_frame, dfn], ignore_index=True)
+                data_frame.to_sql(name='CH4', cpn=engine, if_exists='replace')
+                print('CH4 Data Uploaded to SQL Database!')
+            
+            else:
+                print(f"Invalid CH4 concentration data received: {overallList[4]}")
 
             # if __name__ == '__main__':
             #     if startup:

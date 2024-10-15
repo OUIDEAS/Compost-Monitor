@@ -138,7 +138,7 @@ while True:
                 print('Methane in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
                 dfn = pd.DataFrame(CH4_DataDict)
                 data_frame = pd.concat([data_frame, dfn], ignore_index=True)
-                data_frame.to_sql(name='CH4', cpn=engine, if_exists='replace')
+                data_frame.to_sql(name='CH4', con=engine, if_exists='replace')
                 print('CH4 Data Uploaded to SQL Database!')
             
             else:

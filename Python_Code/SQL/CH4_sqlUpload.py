@@ -134,11 +134,11 @@ while True:
                                     'dateTime': overallList[0],
                                     'CH4_CON': overallList[4],
                                     'Unit': ['PCT VOl'],
-                                    'Parse_1': overallList[1], 
-                                    'Parse_2': overallList[2],
-                                    'Parse_3': overallList[3], 
-                                    'Parse_5': overallList[5],
-                                    'Parse_6': overallList[6]}
+                                    'Parse_1': [overallList[1]], 
+                                    'Parse_2': [overallList[2]],
+                                    'Parse_3': [overallList[3]], 
+                                    'Parse_5': [overallList[5]],
+                                    'Parse_6': [overallList[6]]}
                 # print('Methane in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
                 dfn = pd.DataFrame(CH4_DataDict)
                 data_frame = pd.concat([data_frame, dfn], ignore_index=True)

@@ -31,7 +31,7 @@ header = ['Date_Time', 'Parse_1', 'Parse_2', 'Parse_3', 'CH4 Concentration (%)',
           'Container_No', 'Experiment_No']
 
 count = 0
-bytearray = []
+barray = []
 DataList = []
 overallList = [0, 0]
 CH4_DataDict = {}

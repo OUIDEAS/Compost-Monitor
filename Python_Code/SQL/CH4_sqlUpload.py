@@ -50,7 +50,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 # Create a pandas DataFrame to hold the sensor data
-data_frame = pd.DataFrame(columns=['SensID','Sensor','BuckID','ExpNum','DT','dateTime','CH4_CON','Unit','Parse_1','Parse_2','Parse_3','Parse_4','Parse_5','Parse_6'])
+data_frame = pd.DataFrame(columns=['SensID','Sensor','BuckID','ExpNum','DT','dateTime','CH4_Con','Unit','Parse_1','Parse_2','Parse_3','Parse_4','Parse_5','Parse_6'])
 
 startTime = time.time()
 
@@ -132,9 +132,7 @@ while True:
                                     'Parse_2': overallList[2],
                                     'Parse_3': overallList[3], 
                                     'Parse_5': overallList[5],
-                                    'Parse_6': overallList[6], 
-                                    
-                                    'Container_No': args.containernumber, 'Experiment_No': args.experimentnumber}
+                                    'Parse_6': overallList[6]}
                 print('Methane in container {} good at time {}'.format(args.containernumber, time.strftime("%H:%M:%S")))
                 dfn = pd.DataFrame(CH4_DataDict)
                 data_frame = pd.concat([data_frame, dfn], ignore_index=True)

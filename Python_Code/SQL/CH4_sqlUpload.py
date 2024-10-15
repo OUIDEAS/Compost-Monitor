@@ -50,7 +50,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 # Create a pandas DataFrame to hold the sensor data
-data_frame = pd.DataFrame(columns=['SensID','Sensor','BuckID','ExpNum','DT','dateTime','CH4_Con','Unit','Parse_1','Parse_2','Parse_3','Parse_4','Parse_5','Parse_6'])
+data_frame = pd.DataFrame(columns=['SensID','Sensor','BuckID','ExpNum','DT','dateTime','CH4_CON','Unit','Parse_1','Parse_2','Parse_3','Parse_4','Parse_5','Parse_6'])
 
 startTime = time.time()
 
@@ -126,7 +126,7 @@ while True:
                                     'ExpNum': [0],
                                     'DT': [loopTimer],
                                     'Date_Time': overallList[0],
-                                    'CH4_Con': overallList[4],
+                                    'CH4_CON': overallList[4],
                                     'Unit': ['PCT VOl'],
                                     'Parse_1': overallList[1], 
                                     'Parse_2': overallList[2],

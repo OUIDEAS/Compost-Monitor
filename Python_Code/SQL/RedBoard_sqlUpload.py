@@ -65,7 +65,7 @@ while True:
     while RBSerial.in_waiting:
         RB_inbyte = RBSerial.read(size=1)
         byteArray.append(RB_inbyte)
-        if RB_inbyte == b'\r':
+        if RB_inbyte == b'\n':
             # Remove the newline character from the end of the array
             byteArray.pop()
 

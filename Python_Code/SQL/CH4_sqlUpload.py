@@ -10,7 +10,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import text
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-c', '--comport', default = '/dev/CO2B3')
+parser.add_argument('-c', '--comport', default = '/dev/ttyUSB0')
 parser.add_argument('-f', '--filename', default = '/home/dan/Destop/SJH5_test')
 parser.add_argument('-n', '--containernumber', default = 0)
 parser.add_argument('-cn', '--collection')

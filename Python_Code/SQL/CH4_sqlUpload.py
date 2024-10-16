@@ -18,6 +18,7 @@ parser.add_argument('-e', '--experimentnumber', default = 'testing')
 args = parser.parse_args()
 
 CH4Port = ''.join(args.comport)
+print('THE PORT IS THIS:', CH4Port)
 baud_rate = 9600
 CH4Serial = serial.Serial(CH4Port, baud_rate)
 

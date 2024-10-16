@@ -18,6 +18,7 @@ args = parser.parse_args()
 
 # Serial connection and file paths
 CO2Port = ''.join(args.comport)
+print('THE PORT IS THIS:', CO2Port)
 baud_rate = 9600
 CO2Serial = serial.Serial(CO2Port, baud_rate, timeout=90)
 directoryBase = "{}/{}/Bucket {}/CO2".format(args.filename, time.strftime("%m-%d-%Y"), args.containernumber)

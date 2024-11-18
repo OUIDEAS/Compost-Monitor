@@ -82,7 +82,7 @@ try:
             barray.append(newb)
             lencount += 1
             # log.write(newb)
-
+            # print(barray)
             ## second byte (status is first byte) shows the size of the packet - use that to set the length of the word
             if (packetstart and packetsize == -1):
                 # print('87')
@@ -138,6 +138,7 @@ try:
                 # print(overallList)
                 
                 CH4_con =  (int(overallList[6])*256 + (overallList[7]))/100
+                # print(CH4_con)
                 # print('CH4', overallList[6], overallList[7], CH4_con)
                 if overallList[4] != '*OK' and count < 1:
                     CH4_DataDict = {

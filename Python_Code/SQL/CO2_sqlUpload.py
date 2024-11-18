@@ -90,7 +90,7 @@ try:
             with open(logFileCO2, 'ab') as l:
                 l.write(CO2_inbyte)
             bytearray.append(CO2_inbyte)
-            print(bytearray)
+            # print(bytearray)
             if CO2_inbyte == b'\r':
                 bytearray.pop()
                 DataList.append(

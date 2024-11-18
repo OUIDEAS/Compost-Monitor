@@ -1,10 +1,10 @@
 import mysql.connector
 
 mydb = mysql.connector.connect(
-  host="100.114.38.109",
+  host="100.81.24.41",
   user="root",
   password="pixhawk2",
-  database="tutorial"
+  database="CompostMonitor"
 )
 
 mycursor = mydb.cursor()

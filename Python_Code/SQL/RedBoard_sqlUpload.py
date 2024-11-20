@@ -81,6 +81,7 @@ try:
             # Add the strings from RB_DataSplit to the list
             for i in range(len(RB_DataSplit)):
                 RB_DataList.append(RB_DataSplit[i])
+            print(RB_DataList)
             # print(RB_DataList)
             # Make a dictionary of the data for PyMongo
             RB_DataDict = {
@@ -110,7 +111,7 @@ try:
             RB_DataList = []
 
             byteArray = []
-            RBSerial.close()
+        RBSerial.close()
                 
         # while (time.time() - loopStartTime) < loopTimer:
         #     time.sleep(0.1)
@@ -122,6 +123,7 @@ try:
         #     logFileRB = '{}/RB_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber,
                                                                 # time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))
 except Exception as error:
+    print(error)
     # print(f'RedBoard Failure of Bin {args.containernumber}')
     # email_user = 'michaelvariny@outlook.com'
     # send_mail = '8478046268@txt.att.net'

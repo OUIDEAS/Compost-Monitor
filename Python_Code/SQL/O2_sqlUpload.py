@@ -119,7 +119,7 @@ try:
             
                 dfn.iloc[0:0]
                 bytearray = []
-                O2Serial.close()
+        O2Serial.close()
 
     # while (time.time() - loopStartTime) < loopTimer:
     #     time.sleep(0.1)

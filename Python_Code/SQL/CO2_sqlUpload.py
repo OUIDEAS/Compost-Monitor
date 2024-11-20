@@ -134,7 +134,7 @@ try:
 
                 
                 bytearray = []
-        CO2Serial.close()
+                CO2Serial.close()
 
         # while (time.time() - loopStartTime) < loopTimer:
         #     time.sleep(0.1)

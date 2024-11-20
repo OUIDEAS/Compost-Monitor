@@ -187,7 +187,7 @@ try:
 
                 # print('lencount and packetsize:', lencount, packetsize)
                 lencount = 0
-        CH4Serial.close()
+                CH4Serial.close()
 
                 # count += 1
 

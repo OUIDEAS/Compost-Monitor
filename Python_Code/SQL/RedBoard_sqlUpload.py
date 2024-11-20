@@ -111,7 +111,7 @@ try:
             RB_DataList = []
 
             byteArray = []
-        RBSerial.close()
+            RBSerial.close()
                 
         # while (time.time() - loopStartTime) < loopTimer:
         #     time.sleep(0.1)

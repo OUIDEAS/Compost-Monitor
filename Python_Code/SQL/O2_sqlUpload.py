@@ -97,8 +97,8 @@ try:
                         'SensID': [O2Port],
                         'Sensor': ['EZO_O2'],
                         'BuckID': [args.containernumber],
-                        'ExpNum': [0],
-                        'DT': [60],
+                        'ExpNum': [1],
+                        'DT': [120],
                         'dateTime': [overallList[0]],
                         'O2_CON': [O2_Con],
                         'Unit': ['PPT']
@@ -120,6 +120,7 @@ try:
                 dfn.iloc[0:0]
                 bytearray = []
                 O2Serial.close()
+                break
 
     # while (time.time() - loopStartTime) < loopTimer:
     #     time.sleep(0.1)
@@ -142,6 +143,7 @@ except Exception as error:
     # message = f'O2 Failure of Bin {args.containernumber}'
     # server.sendmail(email_user, email_user, message)
     # server.quit()
+    
     exc_type, exc_obj, exc_tb = sys.exc_info()
     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
     email_user = 'ideascompostserver@gmail.com'
@@ -154,3 +156,4 @@ except Exception as error:
     message = f'O2 Failure of Bin {args.containernumber} \n {error} at line {exc_tb.tb_lineno}'
     server.sendmail(email_user, send_mail, message)
     server.quit()
+    # print('too bad')

@@ -2,24 +2,26 @@
 #include <sensirion_arch_config.h>
 #include <sensirion_voc_algorithm.h>
 #include <SparkFunBME280.h> 
+#include "Adafruit_SGP30.h"
 #include <Wire.h>   
 
 #define printtab(x) Serial.print(String(x)+"\t");
 #define printline Serial.print("\n");
-#define delaytime 90000
+#define delaytime 1000
 #define printtab(x) Serial.print(String(x) + "\t");
 
 
-SGP40 SGP; 
+//SGP40 SGP; 
+Adafruit_SGP30 sgp;
 BME280 BME;
 
 void setup() {                                        //set up the hardware
   Serial.begin(9600);                                 //set baud rate for the hardware serial port_0 to 9600
   Wire.begin();
-  if (SGP.begin() == false) {
+  if (sgp.begin() == false) {
     Serial.println("No SGP40 Detected. Check connections. Checking for BME280...");
-    while (!SGP.begin()){
-      if(BME.begin() == false{
+    while (!sgp.begin()) {
+      if(BME.begin() == false){
         Serial.println("No BME280 Detected. Check connections.");
         while (!BME.begin()){}
         }
@@ -33,7 +35,7 @@ void setup() {                                        //set up the hardware
 
 
 void loop() {                                         //here we go...
-  Serial.print(SGP.getVOCindex());
+  Serial.print(sgp.TVOC);
   Serial.print(";");
   
   //printtab("Humidity: ");

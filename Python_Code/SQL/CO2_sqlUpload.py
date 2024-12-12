@@ -158,7 +158,7 @@ except Exception as error:
     server.starttls()
     # server.login(email_user, 'kcedyafdbqacqrqu')
     server.login(email_user, 'ebtn zksf iqzu wipl')
-    message = f'CO2 Failure of Bin {args.containernumber} \n {error} at line {exc_tb.tb_lineno}'
+    message = f'CO2 Failure of Bin {args.containernumber} \n {error} at line {exc_tb.tb_lineno}at {datetime.datetime.now()}'
     server.sendmail(email_user, send_mail, message)
     server.quit()
     # print('too bad')

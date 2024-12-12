@@ -82,7 +82,7 @@ try:
             for i in range(len(RB_DataSplit)):
                 RB_DataList.append(RB_DataSplit[i])
             # print(RB_DataList)
-            print(RB_DataList)
+            # print(RB_DataList)
             # Make a dictionary of the data for PyMongo
             RB_DataDict = {
                 'SensID': [RBport],

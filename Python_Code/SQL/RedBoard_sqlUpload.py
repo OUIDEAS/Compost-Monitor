@@ -82,14 +82,14 @@ try:
             for i in range(len(RB_DataSplit)):
                 RB_DataList.append(RB_DataSplit[i])
             # print(RB_DataList)
-            # print(RB_DataList)
+            print(RB_DataList)
             # Make a dictionary of the data for PyMongo
             RB_DataDict = {
                 'SensID': [RBport],
                 'Sensor': ['RedBoard'],
                 'BuckID': [args.containernumber],
-                'ExpNum': [0],
-                'DT': [60],
+                'ExpNum': [1],
+                'DT': [120],
                 'dateTime': [RB_DataList[0]], 
                 'TVOC_Con': [RB_DataList[1]], 
                 'TVOC_Unit': ['PTS'],
@@ -112,6 +112,7 @@ try:
 
             byteArray = []
             RBSerial.close()
+            break
                 
         # while (time.time() - loopStartTime) < loopTimer:
         #     time.sleep(0.1)
@@ -133,8 +134,10 @@ except Exception as error:
     # message = f'RedBoard Failure of Bin {args.containernumber}'
     # server.sendmail(email_user, email_user, message)
     # server.quit()
+    
     exc_type, exc_obj, exc_tb = sys.exc_info()
     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+    print(error)
     email_user = 'ideascompostserver@gmail.com'
     send_mail = '8478046268@txt.att.net'
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -144,3 +147,4 @@ except Exception as error:
     message = f'RedBoard Failure of Bin {args.containernumber} \n {error} at line {exc_tb.tb_lineno}'
     server.sendmail(email_user, send_mail, message)
     server.quit()
+    # print('too bad')

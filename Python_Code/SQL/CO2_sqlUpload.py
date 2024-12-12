@@ -115,8 +115,8 @@ try:
                         'SensID': [CO2Port],
                         'Sensor': ['EZO_CO2'],
                         'BuckID': [args.containernumber],
-                        'ExpNum': [0],
-                        'DT': [60],
+                        'ExpNum': [1],
+                        'DT': [120],
                         'dateTime': [overallList[0]],
                         'CO2_CON': [CO2_Con],
                         'Unit': ['PPM']
@@ -135,6 +135,7 @@ try:
                 
                 bytearray = []
                 CO2Serial.close()
+                break
 
         # while (time.time() - loopStartTime) < loopTimer:
         #     time.sleep(0.1)
@@ -147,7 +148,8 @@ try:
     #     logFileCO2 = '{}/CO2_Bucket_{}_{}_{}_log.bin'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))
     #     csvCO2 = '{}/CO2_Bucket_{}_{}_{}.csv'.format(directoryBase, args.containernumber, time.strftime("%m-%d-%Y"), time.strftime("%H--%M--%S"))
 except Exception as error:
-    # print(f'CO2 Failure of Bin {args.containernumber}')
+
+# print(f'CO2 Failure of Bin {args.containernumber}')
     exc_type, exc_obj, exc_tb = sys.exc_info()
     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
     email_user = 'ideascompostserver@gmail.com'
@@ -159,3 +161,4 @@ except Exception as error:
     message = f'CO2 Failure of Bin {args.containernumber} \n {error} at line {exc_tb.tb_lineno}'
     server.sendmail(email_user, send_mail, message)
     server.quit()
+    # print('too bad')

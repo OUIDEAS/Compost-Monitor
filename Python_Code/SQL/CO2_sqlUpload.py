@@ -132,7 +132,8 @@ try:
                 else:
                     print(f"Invalid CO2 concentration data from Bucket {args.containernumber} received: {CO2_Con}")
 
-                
+                mydb.close()
+                mycursor.close()
                 bytearray = []
                 CO2Serial.close()
                 break

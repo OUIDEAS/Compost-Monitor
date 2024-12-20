@@ -111,6 +111,8 @@ try:
             RB_DataList = []
 
             byteArray = []
+            mydb.close()
+            mycursor.close()
             RBSerial.close()
             break
                 

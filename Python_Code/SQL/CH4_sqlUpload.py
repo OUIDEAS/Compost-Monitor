@@ -189,6 +189,8 @@ try:
             overallList = []
 
             # print('lencount and packetsize:', lencount, packetsize)
+            mydb.close()
+            mycursor.close()
             lencount = 0
             CH4Serial.close()
             break

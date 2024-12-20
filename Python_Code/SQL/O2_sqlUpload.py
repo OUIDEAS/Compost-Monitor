@@ -119,6 +119,8 @@ try:
             
                 dfn.iloc[0:0]
                 bytearray = []
+                mydb.close()
+                mycursor.close()
                 O2Serial.close()
                 break
 

@@ -19,7 +19,7 @@ port=:1.0-port0
 
 
 # python3 "${script_filepath}"/O2_Cal.py   -c "${device_filepath}"/"${pci}"7.3.1"${port}"  -f $data_filepath -n 3 &
-# python3 "${script_filepath}"/CO2_Cal.py  -c "${device_filepath}"/"${pci}"7.3.2"${port}" -f $data_filepath -n 3 &
+python3 "${script_filepath}"/CO2_Cal.py  -c "${device_filepath}"/"${pci}"7.3.2"${port}" -f $data_filepath -n 3 &
 # python3 "${script_filepath}"/CH4_Cal.py  -c "${device_filepath}"/"${pci}"7.3.4"${port}" -f $data_filepath -n 2 &
 
 

@@ -14,7 +14,7 @@ user=$(whoami)
 # python3 "${script_filepath}"/RedBoard_mongoupload.py -c /dev/ttyUSB6  -f $data_filepath -n 2 -cn Overall -e April_2024 &
 # python3 "${script_filepath}"/methane_mongoupload.py  -c /dev/ttyUSB7  -f $data_filepath -n 2 -cn Overall -e April_2024 &
 
-# #Bin no.3
+# #Bin no.\
 # python3 "${script_filepath}"/EZO_CO2_mongoupload.py  -c /dev/ttyUSB8  -f $data_filepath -n 3 -cn Overall -e April_2024 &
 # python3 "${script_filepath}"/EZO_O2_mongoupload.py   -c /dev/ttyUSB9  -f $data_filepath -n 3 -cn Overall -e April_2024 &
 # python3 "${script_filepath}"/RedBoard_mongoupload.py -c /dev/ttyUSB10 -f $data_filepath -n 3 -cn Overall -e April_2024 &

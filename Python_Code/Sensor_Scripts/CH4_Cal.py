@@ -26,11 +26,11 @@ CH4Port = ''.join(args.comport)
 # print('THE PORT IS THIS:', CH4Port)
 baud_rate = 9600
 CH4Serial = serial.Serial(CH4Port, baud_rate, timeout=90)
-# cal_Command = 'R\r'.encode('utf-8')
+cal_command = 'R\r'.encode('utf-8')
 # loopTimer = 90
 
 # cal_command = (b'\x11\x02\x4D\x00\x60')
-cal_command = (b'\x11\x04\x4B\x00\x00\x00\x86')
+# cal_command = (b'\x11\x04\x4B\x00\x00\x00\x86')
 # 11 02 4D 00 60
 
 

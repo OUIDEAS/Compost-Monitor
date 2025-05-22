@@ -115,7 +115,7 @@ try:
                         'SensID': [CO2Port],
                         'Sensor': ['EZO_CO2'],
                         'BuckID': [args.containernumber],
-                        'ExpNum': [1],
+                        'ExpNum': [2],
                         'DT': [120],
                         'dateTime': [overallList[0]],
                         'CO2_CON': [CO2_Con],
@@ -137,6 +137,8 @@ try:
                 bytearray = []
                 CO2Serial.close()
                 break
+    mydb.close()
+    mycursor.close()
 
         # while (time.time() - loopStartTime) < loopTimer:
         #     time.sleep(0.1)
@@ -154,12 +156,13 @@ except Exception as error:
     exc_type, exc_obj, exc_tb = sys.exc_info()
     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
     email_user = 'ideascompostserver@gmail.com'
-    send_mail = '8478046268@txt.att.net'
+    # send_mail = '8478046268@txt.att.net'
+    send_mail = 'compostmonitornotifs@gmail.com','compostmonitornotifs2@gmail.com'
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
     # server.login(email_user, 'kcedyafdbqacqrqu')
     server.login(email_user, 'ebtn zksf iqzu wipl')
-    message = f'CO2 Failure of Bin {args.containernumber} \n {error} at line {exc_tb.tb_lineno}at {datetime.datetime.now()}'
+    message = f'CO2 Failure of Bin {args.containernumber} \n {error} at line {exc_tb.tb_lineno} at {datetime.datetime.now()}'
     server.sendmail(email_user, send_mail, message)
     server.quit()
     # print('too bad')

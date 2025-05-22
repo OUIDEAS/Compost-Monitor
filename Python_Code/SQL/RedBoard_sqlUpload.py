@@ -88,7 +88,7 @@ try:
                 'SensID': [RBport],
                 'Sensor': ['RedBoard'],
                 'BuckID': [args.containernumber],
-                'ExpNum': [1],
+                'ExpNum': [2],
                 'DT': [120],
                 'dateTime': [RB_DataList[0]], 
                 'TVOC_Con': [RB_DataList[1]], 
@@ -115,6 +115,9 @@ try:
             mycursor.close()
             RBSerial.close()
             break
+    mydb.close()
+    mycursor.close()
+            
                 
         # while (time.time() - loopStartTime) < loopTimer:
         #     time.sleep(0.1)
@@ -139,9 +142,10 @@ except Exception as error:
     
     exc_type, exc_obj, exc_tb = sys.exc_info()
     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-    print(error)
+    print(error, exc_tb.tb_lineno)
     email_user = 'ideascompostserver@gmail.com'
-    send_mail = '8478046268@txt.att.net'
+    # send_mail = '8478046268@txt.att.net'
+    send_mail = 'compostmonitornotifs@gmail.com','compostmonitornotifs2@gmail.com'
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
     # server.login(email_user, 'kcedyafdbqacqrqu')

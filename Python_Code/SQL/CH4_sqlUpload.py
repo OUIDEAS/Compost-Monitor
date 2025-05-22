@@ -148,7 +148,7 @@ try:
                                     'SensID': [CH4Port],
                                     'Sensor': ['Methane'],
                                     'BuckID': [args.containernumber],
-                                    'ExpNum': [1],
+                                    'ExpNum': [2],
                                     'DT': [120],
                                     'dateTime': overallList[0],
                                     'CH4_CON': CH4_con,
@@ -194,6 +194,8 @@ try:
             lencount = 0
             CH4Serial.close()
             break
+    mydb.close()
+    mycursor.close()
 
                 # count += 1
 
@@ -212,12 +214,13 @@ except Exception as error:
     exc_type, exc_obj, exc_tb = sys.exc_info()
     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
     email_user = 'ideascompostserver@gmail.com'
-    send_mail = '8478046268@txt.att.net'
+    # send_mail = '8478046268@txt.att.net'
+    send_mail = 'compostmonitornotifs@gmail.com' , 'compostmonitornotifs2@gmail.com'
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
     # server.login(email_user, 'kcedyafdbqacqrqu')
     server.login(email_user, 'ebtn zksf iqzu wipl')
-    message = f'CH4 Failure of Bin {args.containernumber} \n {error} at line {exc_tb.tb_lineno}at {datetime.datetime.now()}'
+    message = f'CH4 Failure of Bin {args.containernumber} \n {error} at line {exc_tb.tb_lineno} at {datetime.datetime.now()}'
     server.sendmail(email_user, send_mail, message)
     server.quit()
     # print('too bad')
